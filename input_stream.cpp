@@ -1,16 +1,17 @@
 #include "input_stream.h"
-#include "ifstream"
-#include "stringstream"
-#include "streambuf"
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
 string read_stream()
 {
-	ifstream inFile;
-	inFile.open("test.txt");
-
-	stringstream strStream;
-	strStream << inFile.rdbuf();
-	string str = strStream.str();
+	ifstream file("test.txt");
+	string temp;
+	string result;
+	while(getline(file, temp)){
+		result += temp;
+		result.push_back('\n');
+	}
+	return result;
 }
