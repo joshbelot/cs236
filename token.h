@@ -1,8 +1,14 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 #include <sstream>
 #include <fstream>
+#include <set>
+#include <set>
+#include <fstream>
+#include <cctype>
+#include <stdio.h>
 #include <stdlib.h>
 
 using namespace std;
@@ -27,7 +33,7 @@ enum type
 	COMMENT,
 	WHITESPACE,
 	UNDEFINED,
-	EOF
+	EOF,
 };
 
 class Token

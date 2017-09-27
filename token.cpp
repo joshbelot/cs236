@@ -1,4 +1,4 @@
-#include "Token.h"
+#include "token.h"
 
 Token::Token(type t_type, string t_string, int t_line_num)
 {
@@ -11,64 +11,65 @@ string Token::toStringType()
 {
 	switch(t_type)
 	{
-		case COMMA:
+		case 0:
 			return "COMMA";
 			break;
-		case PERIOD:
+		case 1:
 			return "PERIOD";
 			break;
-		case Q_MARK:
+		case 2:
 			return "Q_MARK";
 			break;
-		case LEFT_PAREN:
+		case 3:
 			return "LEFT_PAREN";
 			break;
-		case RIGHT_PAREN:
+		case 4:
 			return "RIGHT_PAREN";
 			break;
-		case COLON:
+		case 5:
 			return "COLON";
 			break;
-		case COLON_DASH:
+		case 6:
 			return "COLON_DASH";
 			break;
-		case MULTIPLY:
+		case 7:
 			return "MULTIPLY";
 			break;
-		case ADD:
+		case 8:
 			return "ADD";
 			break;
-		case SCHEMES:
+		case 9:
 			return "SCHEMES";
 			break;
-		case FACTS:
+		case 10:
 			return "FACTS";
 			break;
-		case RULES:
+		case 11:
 			return "RULES";
 			break;
-		case QUERIES:
+		case 12:
 			return "QUERIES";
 			break;
-		case ID:
+		case 13:
 			return "ID";
 			break;
-		case STRING:
+		case 14:
 			return "STRING";
 			break;
-		case COMMENT:
+		case 15:
 			return "COMMENT";
 			break;
-		case WHITESPACE:
+		case 16:
 			return "WHITESPACE";
 			break;
-		case UNDEFINED:
+		case 17:
 			return "UNDEFINED";
 			break;
-		case EOF:
+		case 18:
 			return "EOF";
 			break;
 	}
+	return "";
 }
 
 string Token::toStringToken()

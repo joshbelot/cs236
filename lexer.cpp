@@ -1,4 +1,4 @@
-#include "Lexer.h"
+#include "lexer.h"
 
 using namespace std;
 
@@ -42,7 +42,7 @@ int Lexer::run_all_DFA()
 
 void Lexer::scan()
 {
-	//contens is the same as result, found in input_stream.
+	//contents is the same as result, found in input_stream.
 	//Scan actually walks through the whole string, token by token.
 	//From here, it find the longest string, sets winningDFA, and 
 	//iterates to the next token.

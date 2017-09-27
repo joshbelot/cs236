@@ -1,5 +1,5 @@
 #pragma once
-#include "Token.h"
+#include "token.h"
 
 using namespace std;
 
