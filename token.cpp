@@ -4,7 +4,7 @@ Token::Token(type t_type, string t_string, int t_line_num)
 {
 	this->t_type = t_type;
 	this->t_string = t_string;
-	this->t_line_num = t_lin_num;
+	this->t_line_num = t_line_num;
 }
 
 string Token::toStringType()
@@ -66,7 +66,7 @@ string Token::toStringType()
 			return "UNDEFINED";
 			break;
 		case 18:
-			return "EOF";
+			return "E_O_F";
 			break;
 	}
 	return "";

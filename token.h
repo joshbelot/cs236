@@ -33,7 +33,7 @@ enum type
 	COMMENT,
 	WHITESPACE,
 	UNDEFINED,
-	EOF,
+	E_O_F
 };
 
 class Token
@@ -49,4 +49,4 @@ public:
 	string toStringToken();
 	string get_value();
 	type get_type();
-}
+};

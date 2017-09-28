@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-//#include "token.h"
+#include "token.h"
 
 using namespace std;
 
@@ -8,20 +8,20 @@ class Lexer
 {
 private:
 	string contents;
-	//vector<Token> output_list;
+	vector<Token> output_list;
 	string longest_str;
 	unsigned int longest_str_len;
-	//type winningDFA;
+	//type best;
 	int line_num;
 
 public:
 	Lexer(string contents);
 	void scan();
 	string get_contents();
-	/*
 	int get_num_tokens();
-	bool higher_precendence(string s);
 	void print_vector();
+	/*
+	bool higher_precendence(string s);
 	int run_all_DFA();
 	void comma();
 	void period();

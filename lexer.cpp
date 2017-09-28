@@ -23,6 +23,19 @@ string Lexer::get_contents()
 	return contents;
 }
 
+int Lexer::get_num_tokens()
+{
+	return output_list.size();
+}
+
+void Lexer::print_vector()
+{
+	for(int i = 0; i < output_list.size(); i++)
+	{
+		cout << output_list[i].toStringToken();
+	}
+}
+
 /*
 int Lexer::run_all_DFA()
 {
@@ -31,19 +44,9 @@ int Lexer::run_all_DFA()
 
 }
 
-int Lexer::get_num_tokens()
-{
-	//return number of found tokens; used in the final output.
-}
-
 bool Lexer::higher_precedence(string s)
 {
 
-}
-
-void Lexer::print_vector()
-{
-	//Prints the vector that holds the tokens, using toStringToken.
 }
 
 void Lexer::comma()
