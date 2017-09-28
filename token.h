@@ -32,7 +32,7 @@ enum type
 	STRING,
 	COMMENT,
 	WHITESPACE,
-	UNDEFINED,
+	UNDEF,
 	E_O_F
 };
 

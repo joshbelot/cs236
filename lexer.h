@@ -11,7 +11,7 @@ private:
 	vector<Token> output_list;
 	string longest_str;
 	unsigned int longest_str_len;
-	//type best;
+	type best;
 	int line_num;
 
 public:
@@ -20,9 +20,9 @@ public:
 	string get_contents();
 	int get_num_tokens();
 	void print_vector();
-	/*
-	bool higher_precendence(string s);
-	int run_all_DFA();
+	vector<Token> return_vector();
+	int token_test();
+
 	void comma();
 	void period();
 	void q_mark();
@@ -38,12 +38,13 @@ public:
 	void queries();
 	void id();
 	int str();
-	int comment();
-	void scomment();
-	int mcomment();
-	void whitespace();
 	int undef();
+	int comment();
+	void whitespace();
+	/*
+	bool better(string s);
+	int scomment();
+	int mcomment();
 	void add_to_line_count(char c, int &j);
-	vector<Token> return_vector();
 	*/
 };
