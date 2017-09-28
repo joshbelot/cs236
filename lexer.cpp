@@ -1,19 +1,33 @@
 #include "lexer.h"
+#include <iostream>
 
 using namespace std;
 
 
-/*
-Alright, what needs to happen here?
-1) 
-*/
 Lexer::Lexer(string contents)
 {
+	this->contents = contents;
+	longest_str = "";
+	longest_str_len = 0;
+	//best = UNDEF;
+	line_num = 1;
+}
 
+void Lexer::scan()
+{
+	cout << get_contents();
 }
 
 string Lexer::get_contents()
 {
+	return contents;
+}
+
+/*
+int Lexer::run_all_DFA()
+{
+	//Run them all, shortest to longest?
+	//The function just returns the line number. Also, no token uses more than one line.
 
 }
 
@@ -30,22 +44,6 @@ bool Lexer::higher_precedence(string s)
 void Lexer::print_vector()
 {
 	//Prints the vector that holds the tokens, using toStringToken.
-}
-
-int Lexer::run_all_DFA()
-{
-	//Run them all, shortest to longest?
-	//The function just returns the line number. Also, no token uses more than one line.
-
-}
-
-
-void Lexer::scan()
-{
-	//contents is the same as result, found in input_stream.
-	//Scan actually walks through the whole string, token by token.
-	//From here, it find the longest string, sets winningDFA, and 
-	//iterates to the next token.
 }
 
 void Lexer::comma()
@@ -207,3 +205,4 @@ void Lexer::eof()
 {
 
 }
+*/
