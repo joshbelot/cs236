@@ -56,11 +56,43 @@ void Lexer::scan()
 			{
 				if(best == STRING)
 				{
-					output_list.push_back(Token(best,s,num));
+					output_list.push_back(Token(best,s,result_num));
 					line_num += str();
 				}
+				else if(best == COMMENT)
+				{
+					output_list.push_back(Token(best,s,result_num));
+					line_num += comment();
+				}
+				else if(best == UNDEF)
+				{
+					output_list.push_back(Token(best,s,result_num));
+					line_num += undef();
+				}
+				else
+				{
+					output_list.push_back(Token(best,s,result_num));
+				}
+			}
+			//Remove the token that was just parsed.
+			for(int i = 0; i < k; i++)
+			{
+				contents.erase(contents.begin());
 			}
 		}
+		//Remove whitespace token found at beginning of string
+		//and do nothing else
+		else
+		{
+			contents.erase(contents.begin());
+		}
+	}
+	//When contents.length <= 0, add the endOfFile token to the vector
+	output_list.push_back(Token(E_O_F,"",line_num));
+
+	for(int i = 0; i < output_list.size(); i++)
+	{
+		cout << output_list[i].toStringToken();
 	}
 }
 
