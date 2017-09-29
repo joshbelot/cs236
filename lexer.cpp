@@ -90,10 +90,7 @@ void Lexer::scan()
 	//When contents.length <= 0, add the endOfFile token to the vector
 	output_list.push_back(Token(E_O_F,"",line_num));
 
-	for(int i = 0; i < output_list.size(); i++)
-	{
-		cout << output_list[i].toStringToken();
-	}
+	print_vector();
 }
 
 string Lexer::get_contents()
