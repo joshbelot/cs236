@@ -5,12 +5,12 @@ using namespace std;
 
 /*
 Missing the following:
-String
 Comment
 Whitespace
+line_num not incrementing.
 
 Minor issues:
-ID usues goto statements; refactor?
+ID uses goto statements; refactor?
 */
 
 Lexer::Lexer(string contents)
@@ -49,7 +49,24 @@ int Lexer::token_test()
 //Check between ID and anything else. ID has lowest priority.
 bool Lexer::better(string s)
 {
-	return false;
+	if(longest_str == "Queries" || longest_str == "Rules" || longest_str == "Facts" || longest_str == "Schemes")
+	{
+		//If the current longest string is higher precedence AND 
+		//	potential ID is not longer than longest string, then 
+		//	it's not an ID at all.
+		if(s.size() > longest_str_len)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void Lexer::scan()
@@ -130,7 +147,6 @@ vector<Token> Lexer::return_vector()
 {
 	return output_list;
 }
-
 
 //State machines to identify characters
 void Lexer::comma()
@@ -331,7 +347,74 @@ void Lexer::id()
 
 int Lexer::str()
 {
-	return 1;
+	int returns = 0;
+
+	enum state
+	{
+		start,
+		undefined,
+		accept,
+		fail
+	};
+
+	state s = start;
+	stringstream ss;
+	char c;
+
+	for(int i = 0; i < contents.size(); i++)
+	{
+		c = contents[i];
+		switch(s)
+		{
+			case start:
+				if (c == '\'')
+				{
+					s = undefined;
+					ss << c;
+				}
+				else
+				{
+					goto exit;
+				}
+				break;
+			case undefined:
+				if(c == '\'')
+				{
+					//Second quote closes the string.
+					s = accept;
+				}
+				ss << c;
+				break;
+			case accept:
+				if(c == '\'')
+				{
+					s = undefined;
+					ss << c;
+				}
+				else
+				{
+					goto exit;
+				}
+				break;
+			case fail:
+				break;
+		}
+	}
+	exit:
+	string output = ss.str();
+	if(s == undefined)
+	{
+		longest_str = output;
+		longest_str_len = longest_str.size();
+		best = UNDEF;
+	}
+	if(s == accept)
+	{
+		longest_str = output;
+		longest_str_len = longest_str.size();
+		best = STRING;
+	}
+	return returns;
 }
 
 int Lexer::comment()

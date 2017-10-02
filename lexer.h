@@ -45,6 +45,5 @@ public:
 	/*
 	int scomment();
 	int mcomment();
-	void add_to_line_count(char c, int &j);
 	*/
 };
