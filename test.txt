@@ -1,6 +1,9 @@
 ,
+
 .
+
 ?
+
 (
 )
 :
@@ -13,7 +16,8 @@ Rules
 Queries
 A0123ABC
 Schemes123
-'String'
+'Str
+ing'
 'Schemes'
 'BadString
 #Comment

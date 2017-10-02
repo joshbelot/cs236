@@ -8,6 +8,7 @@ Missing the following:
 Comment
 Whitespace
 line_num not incrementing.
+	Make sure to increment when it's in a string!
 
 Minor issues:
 ID uses goto statements; refactor?
@@ -89,7 +90,6 @@ void Lexer::scan()
 				if(best == STRING)
 				{
 					output_list.push_back(Token(best,s,result_num));
-					line_num += str();
 				}
 				else if(best == COMMENT)
 				{
@@ -105,6 +105,10 @@ void Lexer::scan()
 				{
 					output_list.push_back(Token(best,s,result_num));
 				}
+			}
+			else
+			{
+				line_num++;
 			}
 			//Remove the token that was just parsed.
 			for(int i = 0; i < k; i++)
@@ -345,10 +349,8 @@ void Lexer::id()
 	}
 }
 
-int Lexer::str()
+void Lexer::str()
 {
-	int returns = 0;
-
 	enum state
 	{
 		start,
@@ -383,6 +385,10 @@ int Lexer::str()
 					//Second quote closes the string.
 					s = accept;
 				}
+				if(c == '\n')
+				{
+					line_num++;
+				}
 				ss << c;
 				break;
 			case accept:
@@ -414,7 +420,6 @@ int Lexer::str()
 		longest_str_len = longest_str.size();
 		best = STRING;
 	}
-	return returns;
 }
 
 int Lexer::comment()
@@ -429,7 +434,12 @@ int Lexer::undef()
 
 void Lexer::whitespace()
 {
-
+	if(contents[0] == '\n')
+	{
+		longest_str = "newline";
+		longest_str_len = 1;
+		best = WHITESPACE;
+	}
 }
 
 /*

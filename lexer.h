@@ -38,7 +38,7 @@ public:
 	void rules();
 	void queries();
 	void id();
-	int str();
+	void str();
 	int undef();
 	int comment();
 	void whitespace();
