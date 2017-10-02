@@ -22,6 +22,7 @@ public:
 	void print_vector();
 	vector<Token> return_vector();
 	int token_test();
+	bool better(string s);
 
 	void comma();
 	void period();
@@ -42,7 +43,6 @@ public:
 	int comment();
 	void whitespace();
 	/*
-	bool better(string s);
 	int scomment();
 	int mcomment();
 	void add_to_line_count(char c, int &j);

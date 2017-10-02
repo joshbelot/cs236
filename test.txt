@@ -1,10 +1,18 @@
-#.. 
-:: 
-:-:- 
-,, 
-** 
-?? 
-()() 
-++ 
-Schemes Facts 
-Rules Queries
+,
+.
+?
+(
+)
+:
+:-
+*
++
+Schemes
+Facts
+Rules
+Queries
+A0123ABC
+'String'
+#Comment
+
+/

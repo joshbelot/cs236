@@ -3,6 +3,15 @@
 
 using namespace std;
 
+/*
+Missing the following:
+String
+Comment
+Whitespace
+
+Minor issues:
+ID usues goto statements; refactor?
+*/
 
 Lexer::Lexer(string contents)
 {
@@ -35,6 +44,12 @@ int Lexer::token_test()
 	comment();
 	whitespace();
 	return num;
+}
+
+//Check between ID and anything else. ID has lowest priority.
+bool Lexer::better(string s)
+{
+	return false;
 }
 
 void Lexer::scan()
@@ -248,9 +263,70 @@ void Lexer::queries()
 	}
 }
 
-void Lexer::id()
-{
 
+void Lexer::id()
+{	
+	//States of the automaton.
+	enum state
+	{
+		start,
+		accept
+	};
+	state s = start;
+	stringstream ss;
+	char c;
+	for(int i = 0; i < contents.size(); i++)
+	{
+		//c advances to next char with each iteration
+		c = contents[i];
+
+		//The actual state machine
+		switch(s)
+		{
+			case start:
+				//ID's start with alpha character. If c is alpha, accept the ID
+				// and read it into the string stream.
+				if(isalpha(c))
+				{
+					ss << c;
+					s = accept;
+				}
+				else
+				{
+					//break out of the for loop.
+					//Is there a better way to do this than exit?
+					goto exit;
+				}
+				break;
+			case accept:
+				//ID's are a letter followed by any string of letters and numbers.
+				//While the input is either of these, keep reading them into ss.
+				if(isalpha(c) || isdigit(c))
+				{
+					ss << c;
+				}
+				else
+				{
+					//break out of the for loop.
+					goto exit;
+				}
+				break;
+		}
+	}
+
+	//guide point for the gotos used above
+	exit:
+
+	string id_token = ss.str();
+
+	//If s was accepted and there isn't a better token being read,
+	//	then accept a new token.
+	if(s == accept && !better(id_token))
+	{
+		longest_str = id_token;
+		longest_str_len = longest_str.size();
+		best = ID;
+	}
 }
 
 int Lexer::str()
@@ -274,12 +350,6 @@ void Lexer::whitespace()
 }
 
 /*
-bool Lexer::better(string s)
-{
-
-}
-
-
 void Lexer::eof()
 {
 
