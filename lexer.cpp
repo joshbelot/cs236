@@ -6,9 +6,6 @@ using namespace std;
 /*
 Missing the following:
 Comment
-Whitespace
-line_num not incrementing.
-	Make sure to increment when it's in a string!
 
 Minor issues:
 ID uses goto statements; refactor?
@@ -42,7 +39,8 @@ int Lexer::token_test()
 	queries();
 	id();
 	str();
-	comment();
+	single_line_comment();
+	multi_line_comment();
 	whitespace();
 	return num;
 }
@@ -94,7 +92,6 @@ void Lexer::scan()
 				else if(best == COMMENT)
 				{
 					output_list.push_back(Token(best,s,result_num));
-					line_num += comment();
 				}
 				else if(best == UNDEF)
 				{
@@ -124,6 +121,7 @@ void Lexer::scan()
 		}
 	}
 	//When contents.length <= 0, add the endOfFile token to the vector
+	line_num--;
 	output_list.push_back(Token(E_O_F,"",line_num));
 
 	print_vector();
@@ -422,9 +420,166 @@ void Lexer::str()
 	}
 }
 
-int Lexer::comment()
+void Lexer::comment()
 {
-	return 1;
+	//States of the automaton.
+	enum state
+	{
+		start,
+		multi,
+		undef,
+		accept,
+		accept_multi
+	};
+	state s = start;
+	stringstream ss;
+	char c;
+	char cc;
+	for(int i = 0; i < contents.size(); i++)
+	{
+		//c advances to next char with each iteration
+		c = contents[i];
+		cc = contents[i + 1];
+
+		//The actual state machine
+		switch(s)
+		{
+			case start:
+				//ID's start with alpha character. If c is alpha, accept the ID
+				// and read it into the string stream.
+				if(c == '#' && cc != '|')
+				{
+					ss << c;
+					s = accept;
+				}
+				else if(c == '#' && cc == '|')
+				{
+					ss << c;
+					ss << cc;
+					i++;
+					s = accept_multi;
+				}
+				else
+				{
+					//break out of the for loop.
+					//Is there a better way to do this than exit?
+					goto exit;
+				}
+				break;
+			case accept:
+				//ID's are a letter followed by any string of letters and numbers.
+				//While the input is either of these, keep reading them into ss.
+				if(c != '\n')
+				{
+					ss << c;
+				}
+				else
+				{
+					//break out of the for loop.
+					goto exit;
+				}
+				break;
+			case accept_multi:
+				if(c == '|' && cc == '#')
+				{
+					ss << c;
+					ss << cc;
+					goto exit;
+				}
+				else if()
+		}
+	}
+
+	//guide point for the gotos used above
+	exit:
+
+	string id_token = ss.str();
+
+	//If s was accepted and there isn't a better token being read,
+	//	then accept a new token.
+	if(s == accept)
+	{
+		longest_str = id_token;
+		longest_str_len = longest_str.size();
+		best = COMMENT;
+	}	
+}
+
+void Lexer::multi_line_comment()
+{
+	enum state
+	{
+		start,
+		undefined,
+		accept,
+		fail
+	};
+
+	state s = start;
+	stringstream ss;
+	char c;
+	char cc;
+
+	for(int i = 0; i < contents.size(); i++)
+	{
+		c = contents[i];
+		cc = contents[i+1];
+		switch(s)
+		{
+			case start:
+				if (c == '#' && cc == '|')
+				{
+					s = undefined;
+					ss << c;
+					ss << cc;
+					i++;
+				}
+				else
+				{
+					goto exit;
+				}
+				break;
+			case undefined:
+				if(c == '|' && cc == '#')
+				{
+					//Second |# closes the multi-line comment.
+					s = accept;
+				}
+				if(c == '\n')
+				{
+					line_num++;
+				}
+				ss << c;
+				break;
+			case accept:
+				if(c == '|' && cc == '#')
+				{
+					s = undefined;
+					ss << c;
+				}
+				else
+				{
+					goto exit;
+				}
+				break;
+			case fail:
+				break;
+		}
+	}
+	exit:
+	string output = ss.str();
+	if(s == undefined)
+	{
+		longest_str = output;
+		longest_str_len = longest_str.size();
+		best = UNDEF;
+	}
+	if(s == accept)
+	{
+		longest_str = output;
+		longest_str_len = longest_str.size();
+		best = COMMENT;
+	}	
 }
 
 int Lexer::undef()
@@ -436,7 +591,7 @@ void Lexer::whitespace()
 {
 	if(contents[0] == '\n')
 	{
-		longest_str = "newline";
+		longest_str = "";
 		longest_str_len = 1;
 		best = WHITESPACE;
 	}

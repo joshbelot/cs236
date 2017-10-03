@@ -40,7 +40,8 @@ public:
 	void id();
 	void str();
 	int undef();
-	int comment();
+	void comment();
+	void multi_line_comment();
 	void whitespace();
 	/*
 	int scomment();
