@@ -39,12 +39,8 @@ public:
 	void queries();
 	void id();
 	void str();
-	int undef();
+	void undef();
 	void comment();
-	void multi_line_comment();
+	//void multi_line_comment();
 	void whitespace();
-	/*
-	int scomment();
-	int mcomment();
-	*/
 };

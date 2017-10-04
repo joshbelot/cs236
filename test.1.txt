@@ -1,5 +1,1 @@
-Schemes123 'string'
-#|comment|#
-'Str
-ing'
-'Schemes'
+#comment

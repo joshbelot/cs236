@@ -23,7 +23,7 @@ Lexer::Lexer(string contents)
 int Lexer::token_test()
 {
 	int num = line_num;
-	undef();
+	//undef();
 	comma();
 	period();
 	q_mark();
@@ -39,8 +39,8 @@ int Lexer::token_test()
 	queries();
 	id();
 	str();
-	single_line_comment();
-	multi_line_comment();
+	comment();
+	///multi_line_comment();
 	whitespace();
 	return num;
 }
@@ -96,7 +96,6 @@ void Lexer::scan()
 				else if(best == UNDEF)
 				{
 					output_list.push_back(Token(best,s,result_num));
-					line_num += undef();
 				}
 				else
 				{
@@ -422,170 +421,201 @@ void Lexer::str()
 
 void Lexer::comment()
 {
-	//States of the automaton.
 	enum state
 	{
 		start,
+		maybe_single,
+		single,
 		multi,
-		undef,
-		accept,
-		accept_multi
+		maybe_close,
+		close
 	};
+
 	state s = start;
 	stringstream ss;
 	char c;
-	char cc;
+	bool accept = false;
+
 	for(int i = 0; i < contents.size(); i++)
 	{
-		//c advances to next char with each iteration
 		c = contents[i];
-		cc = contents[i + 1];
 
-		//The actual state machine
 		switch(s)
 		{
 			case start:
-				//ID's start with alpha character. If c is alpha, accept the ID
-				// and read it into the string stream.
-				if(c == '#' && cc != '|')
+				if(c == '#')
 				{
+					cout << c << " Initial char ";
 					ss << c;
-					s = accept;
-				}
-				else if(c == '#' && cc == '|')
-				{
-					ss << c;
-					ss << cc;
-					i++;
-					s = accept_multi;
+					s = maybe_single;
 				}
 				else
 				{
-					//break out of the for loop.
-					//Is there a better way to do this than exit?
-					goto exit;
+					s = close;
 				}
 				break;
-			case accept:
-				//ID's are a letter followed by any string of letters and numbers.
-				//While the input is either of these, keep reading them into ss.
+			case maybe_single:
+				if(c == '|')
+				{
+					ss << c;
+					s = multi;
+				}
+				else if(c != '\n')
+				{
+					cout << c << " Maybe single!";
+					ss << c;
+					s = single;
+				}
+				else
+				{
+					s = close;
+				}
+				break;
+			case single:
 				if(c != '\n')
 				{
+					cout << c << " Got to single ";
 					ss << c;
 				}
 				else
 				{
-					//break out of the for loop.
-					goto exit;
+					cout << c << " Accept! ";
+					accept == true;
+					s = close;
 				}
 				break;
-			case accept_multi:
-				if(c == '|' && cc == '#')
+			case multi:
+				if(contents.length() == ss.str().length())
 				{
-					ss << c;
-					ss << cc;
-					goto exit;
+					s = close;
 				}
-				else if()
-		}
-	}
-
-	//guide point for the gotos used above
-	exit:
-
-	string id_token = ss.str();
-
-	//If s was accepted and there isn't a better token being read,
-	//	then accept a new token.
-	if(s == accept)
-	{
-		longest_str = id_token;
-		longest_str_len = longest_str.size();
-		best = COMMENT;
-	}	
-}
-
-void Lexer::multi_line_comment()
-{
-	enum state
-	{
-		start,
-		undefined,
-		accept,
-		fail
-	};
-
-	state s = start;
-	stringstream ss;
-	char c;
-	char cc;
-
-	for(int i = 0; i < contents.size(); i++)
-	{
-		c = contents[i];
-		cc = contents[i+1];
-		switch(s)
-		{
-			case start:
-				if (c == '#' && cc == '|')
+				else if(c == '|')
 				{
-					s = undefined;
 					ss << c;
-					ss << cc;
-					i++;
+					s = maybe_close;
 				}
 				else
 				{
-					goto exit;
+					ss << c;
 				}
 				break;
-			case undefined:
-				if(c == '|' && cc == '#')
+			case maybe_close:
+				if(contents.length() == ss.str().length())
 				{
-					//Second |# closes the multi-line comment.
-					s = accept;
+					s = close;
 				}
-				if(c == '\n')
+				else if(c == '#')
 				{
-					line_num++;
+					ss << c;
+					accept = true;
+					s = close;
 				}
-				ss << c;
-				break;
-			case accept:
-				if(c == '|' && cc == '#')
+				else if(c == '|')
 				{
-					s = undefined;
 					ss << c;
 				}
 				else
 				{
-					goto exit;
+					s = multi;
+					ss <<c;
 				}
 				break;
-			case fail:
+			case close:
+				string id_token = ss.str();
+
+				if(accept == true)
+				{
+					longest_str = id_token;
+					longest_str_len = longest_str.size();
+					best = COMMENT;
+				}
+				else
+				{
+					// longest_str = id_token;
+					// longest_str_len = longest_str.size();
+					// best = UNDEF;
+				}
 				break;
 		}
 	}
-	exit:
-	string output = ss.str();
-	if(s == undefined)
-	{
-		longest_str = output;
-		longest_str_len = longest_str.size();
-		best = UNDEF;
-	}
-	if(s == accept)
-	{
-		longest_str = output;
-		longest_str_len = longest_str.size();
-		best = COMMENT;
-	}	
 }
 
-int Lexer::undef()
-{
-	return 1;
-}
+// void Lexer::multi_line_comment()
+// {
+// 	enum state
+// 	{
+// 		start,
+// 		undefined,
+// 		accept,
+// 		fail
+// 	};
+
+// 	state s = start;
+// 	stringstream ss;
+// 	char c;
+// 	char cc;
+
+// 	for(int i = 0; i < contents.size(); i++)
+// 	{
+// 		c = contents[i];
+// 		cc = contents[i+1];
+// 		switch(s)
+// 		{
+// 			case start:
+// 				if (c == '#' && cc == '|')
+// 				{
+// 					s = undefined;
+// 					ss << c;
+// 					ss << cc;
+// 					i++;
+// 				}
+// 				else
+// 				{
+// 					goto exit;
+// 				}
+// 				break;
+// 			case undefined:
+// 				if(c == '|' && cc == '#')
+// 				{
+// 					//Second |# closes the multi-line comment.
+// 					s = accept;
+// 				}
+// 				if(c == '\n')
+// 				{
+// 					line_num++;
+// 				}
+// 				ss << c;
+// 				break;
+// 			case accept:
+// 				if(c == '|' && cc == '#')
+// 				{
+// 					s = undefined;
+// 					ss << c;
+// 				}
+// 				else
+// 				{
+// 					goto exit;
+// 				}
+// 				break;
+// 			case fail:
+// 				break;
+// 		}
+// 	}
+// 	exit:
+// 	string output = ss.str();
+// 	if(s == undefined)
+// 	{
+// 		longest_str = output;
+// 		longest_str_len = longest_str.size();
+// 		best = UNDEF;
+// 	}
+// 	if(s == accept)
+// 	{
+// 		longest_str = output;
+// 		longest_str_len = longest_str.size();
+// 		best = COMMENT;
+// 	}	
+// }
 
 void Lexer::whitespace()
 {
@@ -595,6 +625,13 @@ void Lexer::whitespace()
 		longest_str_len = 1;
 		best = WHITESPACE;
 	}
+}
+
+void Lexer::undef()
+{
+	longest_str = contents[0];
+	longest_str_len = 1;
+	best = UNDEF;
 }
 
 /*
