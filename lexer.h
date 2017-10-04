@@ -42,6 +42,5 @@ public:
 	void str();
 	void undef();
 	void comment();
-	//void multi_line_comment();
 	void whitespace();
 };

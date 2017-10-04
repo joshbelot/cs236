@@ -3,14 +3,6 @@
 
 using namespace std;
 
-/*
-Missing the following:
-Comment
-
-Minor issues:
-ID uses goto statements; refactor?
-*/
-
 Lexer::Lexer(string contents)
 {
 	this->contents = contents;
@@ -40,7 +32,6 @@ int Lexer::token_test()
 	id();
 	str();
 	comment();
-	///multi_line_comment();
 	whitespace();
 	return num;
 }
@@ -572,97 +563,6 @@ void Lexer::comment()
 		}
 	}
 }
-
-// string output = ss.str();
-// 	if(s == undefined)
-// 	{
-// 		longest_str = output;
-// 		longest_str_len = longest_str.size();
-// 		best = UNDEF;
-// 	}
-// 	if(s == accept)
-// 	{
-// 		longest_str = output;
-// 		longest_str_len = longest_str.size();
-// 		best = STRING;
-// 	}
-
-// void Lexer::multi_line_comment()
-// {
-// 	enum state
-// 	{
-// 		start,
-// 		undefined,
-// 		accept,
-// 		fail
-// 	};
-
-// 	state s = start;
-// 	stringstream ss;
-// 	char c;
-// 	char cc;
-
-// 	for(int i = 0; i < contents.size(); i++)
-// 	{
-// 		c = contents[i];
-// 		cc = contents[i+1];
-// 		switch(s)
-// 		{
-// 			case start:
-// 				if (c == '#' && cc == '|')
-// 				{
-// 					s = undefined;
-// 					ss << c;
-// 					ss << cc;
-// 					i++;
-// 				}
-// 				else
-// 				{
-// 					goto exit;
-// 				}
-// 				break;
-// 			case undefined:
-// 				if(c == '|' && cc == '#')
-// 				{
-// 					//Second |# closes the multi-line comment.
-// 					s = accept;
-// 				}
-// 				if(c == '\n')
-// 				{
-// 					line_num++;
-// 				}
-// 				ss << c;
-// 				break;
-// 			case accept:
-// 				if(c == '|' && cc == '#')
-// 				{
-// 					s = undefined;
-// 					ss << c;
-// 				}
-// 				else
-// 				{
-// 					goto exit;
-// 				}
-// 				break;
-// 			case fail:
-// 				break;
-// 		}
-// 	}
-// 	exit:
-// 	string output = ss.str();
-// 	if(s == undefined)
-// 	{
-// 		longest_str = output;
-// 		longest_str_len = longest_str.size();
-// 		best = UNDEF;
-// 	}
-// 	if(s == accept)
-// 	{
-// 		longest_str = output;
-// 		longest_str_len = longest_str.size();
-// 		best = COMMENT;
-// 	}	
-// }
 
 void Lexer::whitespace()
 {
