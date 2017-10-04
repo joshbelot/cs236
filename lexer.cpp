@@ -427,10 +427,10 @@ void Lexer::comment()
 	char c;
 	bool accept = false;
 
-	for(int i = 0; i <= contents.size(); i++)
+	for(int i = 0; i <= contents.length(); i++)
 	{
 		c = contents[i];
-
+		
 		switch(s)
 		{
 			case start:
@@ -487,8 +487,15 @@ void Lexer::comment()
 			{
 				if(contents.size() == ss.str().length())
 				{
-					ss << c;
+					//ss << c;
 					s = close_multi;
+
+					string id_token = ss.str();
+
+					longest_str = id_token;
+					longest_str_len = longest_str.size();
+					accept = true;
+					goto exit;
 				}
 				else if(c == '|')
 				{
@@ -509,7 +516,8 @@ void Lexer::comment()
 			{
 				if(contents.size() == ss.str().length())
 				{
-					s = close;
+					cout << "eof -- go to close_multi\n";
+					s = close_multi;
 				}
 				else if(c == '#')
 				{
@@ -530,22 +538,27 @@ void Lexer::comment()
 			}
 			case close_multi:
 			{
+				cout << "Arrived at close_multi.\n";
 				string id_token = ss.str();
 
 				if(accept == true)
 				{
+					cout << "Make the accept token\n";
 					longest_str = id_token;
 					longest_str_len = longest_str.size();
 					best = COMMENT;
-					i++;
 					accept = false;
 					goto exit;
 				}
 				else
 				{
+					cout << "Make the undef token\n";
 					longest_str = id_token;
 					longest_str_len = longest_str.size();
+					cout << longest_str << endl;
+					cout << longest_str_len << endl;
 					best = UNDEF;
+					goto exit;
 				}
 				break;
 			}
