@@ -495,6 +495,10 @@ void Lexer::comment()
 				}
 				else
 				{
+					if(c == '\n')
+					{
+						line_num++;
+					}
 					ss << c;
 				}
 				break;
