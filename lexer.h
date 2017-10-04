@@ -19,6 +19,7 @@ public:
 	void scan();
 	string get_contents();
 	int get_num_tokens();
+	void print_num_tokens(int size);
 	void print_vector();
 	vector<Token> return_vector();
 	int token_test();

@@ -23,7 +23,7 @@ Lexer::Lexer(string contents)
 int Lexer::token_test()
 {
 	int num = line_num;
-	//undef();
+	undef();
 	comma();
 	period();
 	q_mark();
@@ -102,10 +102,6 @@ void Lexer::scan()
 					output_list.push_back(Token(best,s,result_num));
 				}
 			}
-			else
-			{
-				line_num++;
-			}
 			//Remove the token that was just parsed.
 			for(int i = 0; i < k; i++)
 			{
@@ -120,10 +116,8 @@ void Lexer::scan()
 		}
 	}
 	//When contents.length <= 0, add the endOfFile token to the vector
-	line_num--;
+	//line_num--;
 	output_list.push_back(Token(E_O_F,"",line_num));
-
-	print_vector();
 }
 
 string Lexer::get_contents()
@@ -134,6 +128,11 @@ string Lexer::get_contents()
 int Lexer::get_num_tokens()
 {
 	return output_list.size();
+}
+
+void Lexer::print_num_tokens(int size)
+{
+	cout << "Total tokens = " << size << '\n';
 }
 
 void Lexer::print_vector()
@@ -428,7 +427,8 @@ void Lexer::comment()
 		single,
 		multi,
 		maybe_close,
-		close
+		close,
+		close_multi
 	};
 
 	state s = start;
@@ -443,9 +443,9 @@ void Lexer::comment()
 		switch(s)
 		{
 			case start:
+			{
 				if(c == '#')
 				{
-					cout << c << " Initial char ";
 					ss << c;
 					s = maybe_single;
 				}
@@ -454,7 +454,9 @@ void Lexer::comment()
 					s = close;
 				}
 				break;
+			}
 			case maybe_single:
+			{
 				if(c == '|')
 				{
 					ss << c;
@@ -462,7 +464,6 @@ void Lexer::comment()
 				}
 				else if(c != '\n')
 				{
-					cout << c << " Maybe single!";
 					ss << c;
 					s = single;
 				}
@@ -471,23 +472,30 @@ void Lexer::comment()
 					s = close;
 				}
 				break;
+			}
 			case single:
-				if(c != '\n')
+			{
+				if(contents.length() == ss.str().length())
 				{
-					cout << c << " Got to single ";
+					accept = true;
+					s = close;
+				}
+				else if(c != '\n')
+				{
 					ss << c;
 				}
 				else
 				{
-					cout << c << " Accept! ";
-					accept == true;
+					accept = true;
 					s = close;
 				}
 				break;
+			}
 			case multi:
+			{
 				if(contents.length() == ss.str().length())
 				{
-					s = close;
+					s = close_multi;
 				}
 				else if(c == '|')
 				{
@@ -499,7 +507,9 @@ void Lexer::comment()
 					ss << c;
 				}
 				break;
+			}
 			case maybe_close:
+			{
 				if(contents.length() == ss.str().length())
 				{
 					s = close;
@@ -508,7 +518,7 @@ void Lexer::comment()
 				{
 					ss << c;
 					accept = true;
-					s = close;
+					s = close_multi;
 				}
 				else if(c == '|')
 				{
@@ -520,7 +530,9 @@ void Lexer::comment()
 					ss <<c;
 				}
 				break;
-			case close:
+			}
+			case close_multi:
+			{
 				string id_token = ss.str();
 
 				if(accept == true)
@@ -528,6 +540,26 @@ void Lexer::comment()
 					longest_str = id_token;
 					longest_str_len = longest_str.size();
 					best = COMMENT;
+					accept = false;
+				}
+				else
+				{
+					longest_str = id_token;
+					longest_str_len = longest_str.size();
+					best = UNDEF;
+				}
+				break;
+			}
+			case close:
+			{
+				string id_token = ss.str();
+
+				if(accept == true)
+				{
+					longest_str = id_token;
+					longest_str_len = longest_str.size();
+					best = COMMENT;
+					accept = false;
 				}
 				else
 				{
@@ -536,9 +568,24 @@ void Lexer::comment()
 					// best = UNDEF;
 				}
 				break;
+			}
 		}
 	}
 }
+
+// string output = ss.str();
+// 	if(s == undefined)
+// 	{
+// 		longest_str = output;
+// 		longest_str_len = longest_str.size();
+// 		best = UNDEF;
+// 	}
+// 	if(s == accept)
+// 	{
+// 		longest_str = output;
+// 		longest_str_len = longest_str.size();
+// 		best = STRING;
+// 	}
 
 // void Lexer::multi_line_comment()
 // {
@@ -619,11 +666,15 @@ void Lexer::comment()
 
 void Lexer::whitespace()
 {
-	if(contents[0] == '\n')
+	if(contents[0] == '\n' || contents[0] == ' ')
 	{
 		longest_str = "";
 		longest_str_len = 1;
 		best = WHITESPACE;
+		if(contents[0] == '\n')
+		{
+			line_num++;
+		}
 	}
 }
 

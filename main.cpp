@@ -33,6 +33,8 @@ int main(int argc, char** argv)
 		//This actually performs the token extraction, as well as
 		//pushing the found tokens onto the tokens vector.
 		lex.scan();
+		lex.print_vector();
+		lex.print_num_tokens(lex.get_num_tokens());
 	}
 	else
 	{

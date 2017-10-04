@@ -18,4 +18,4 @@ ing'
 #Comment
 #|multi
 line
-comment|
+comment|#

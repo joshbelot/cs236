@@ -66,7 +66,7 @@ string Token::toStringType()
 			return "UNDEFINED";
 			break;
 		case 18:
-			return "E_O_F";
+			return "EOF";
 			break;
 	}
 	return "";
