@@ -427,7 +427,7 @@ void Lexer::comment()
 	char c;
 	bool accept = false;
 
-	for(int i = 0; i < contents.size(); i++)
+	for(int i = 0; i <= contents.size(); i++)
 	{
 		c = contents[i];
 
@@ -466,9 +466,10 @@ void Lexer::comment()
 			}
 			case single:
 			{
-				if(contents.length() == ss.str().length())
+				if(contents.size() == ss.str().length())
 				{
 					accept = true;
+					ss << c;
 					s = close;
 				}
 				else if(c != '\n')
@@ -484,8 +485,9 @@ void Lexer::comment()
 			}
 			case multi:
 			{
-				if(contents.length() == ss.str().length())
+				if(contents.size() == ss.str().length())
 				{
+					ss << c;
 					s = close_multi;
 				}
 				else if(c == '|')
@@ -505,7 +507,7 @@ void Lexer::comment()
 			}
 			case maybe_close:
 			{
-				if(contents.length() == ss.str().length())
+				if(contents.size() == ss.str().length())
 				{
 					s = close;
 				}
@@ -535,7 +537,9 @@ void Lexer::comment()
 					longest_str = id_token;
 					longest_str_len = longest_str.size();
 					best = COMMENT;
+					i++;
 					accept = false;
+					goto exit;
 				}
 				else
 				{
@@ -555,6 +559,7 @@ void Lexer::comment()
 					longest_str_len = longest_str.size();
 					best = COMMENT;
 					accept = false;
+					goto exit;
 				}
 				else
 				{
@@ -565,6 +570,10 @@ void Lexer::comment()
 				break;
 			}
 		}
+	}
+	exit:
+	{
+		//cout << "exiting.\n";
 	}
 }
 

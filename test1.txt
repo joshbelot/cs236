@@ -1,4 +1,4 @@
-#comment
-#|multi
-line|
-#test
+#com
+#|m
+l
+c|
