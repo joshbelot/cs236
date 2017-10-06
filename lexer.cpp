@@ -123,7 +123,7 @@ int Lexer::get_num_tokens()
 
 void Lexer::print_num_tokens(int size)
 {
-	cout << "Total tokens = " << size << '\n';
+	cout << "Total Tokens = " << size << '\n';
 }
 
 void Lexer::print_vector()
@@ -374,6 +374,7 @@ void Lexer::str()
 				}
 				if(c == '\n')
 				{
+					//cout << "Str++\n";
 					line_num++;
 				}
 				ss << c;
@@ -485,11 +486,13 @@ void Lexer::comment()
 			}
 			case multi:
 			{
+				if(c == '\n')
+					{
+						line_num++;
+					}
 				if(contents.size() == ss.str().length())
 				{
-					//ss << c;
 					s = close_multi;
-
 					string id_token = ss.str();
 
 					longest_str = id_token;
@@ -504,10 +507,10 @@ void Lexer::comment()
 				}
 				else
 				{
-					if(c == '\n')
-					{
-						line_num++;
-					}
+					// if(c == '\n')
+					// {
+					// 	line_num++;
+					// }
 					ss << c;
 				}
 				break;
@@ -516,8 +519,12 @@ void Lexer::comment()
 			{
 				if(contents.size() == ss.str().length())
 				{
-					cout << "eof -- go to close_multi\n";
 					s = close_multi;
+
+					longest_str = ss.str();
+					longest_str_len = longest_str.size();
+					best = UNDEF;
+					goto exit;
 				}
 				else if(c == '#')
 				{
@@ -532,18 +539,17 @@ void Lexer::comment()
 				else
 				{
 					s = multi;
-					ss <<c;
+					ss << c;
 				}
 				break;
 			}
 			case close_multi:
 			{
-				cout << "Arrived at close_multi.\n";
 				string id_token = ss.str();
 
 				if(accept == true)
 				{
-					cout << "Make the accept token\n";
+					//cout << "Make the accept token\n";
 					longest_str = id_token;
 					longest_str_len = longest_str.size();
 					best = COMMENT;
@@ -552,11 +558,11 @@ void Lexer::comment()
 				}
 				else
 				{
-					cout << "Make the undef token\n";
+					//cout << "Make the undef token\n";
 					longest_str = id_token;
 					longest_str_len = longest_str.size();
-					cout << longest_str << endl;
-					cout << longest_str_len << endl;
+					// cout << longest_str << endl;
+					// cout << longest_str_len << endl;
 					best = UNDEF;
 					goto exit;
 				}
@@ -599,6 +605,7 @@ void Lexer::whitespace()
 		best = WHITESPACE;
 		if(contents[0] == '\n')
 		{
+			//cout << "White++\n";
 			line_num++;
 		}
 	}

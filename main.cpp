@@ -20,7 +20,14 @@ int main(int argc, char** argv)
 		stringstream ss;
 		while(getline(in_file, s))
 		{
-			ss << s << endl;
+			if(!in_file.eof())
+			{
+				ss << s << endl;
+			}
+			else
+			{
+				ss << s;
+			}
 		}
 
 		//Convert stringstream to string
