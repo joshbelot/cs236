@@ -12,5 +12,6 @@ private:
 public:
 	Parser(vector<Token> tokens);
 	void test(Token tok1, type tok2);
+	void scheme();
 	void datalog_parse();
 };

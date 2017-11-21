@@ -1,6 +1,5 @@
 #include "parser.h"
 #include <vector>
-#include "token.h"
 
 using namespace std;
 
@@ -24,11 +23,24 @@ void Parser::test(Token tok1, type tok2)
 	}
 }
 
+void Parser::scheme()
+{
+	//ID LEFT_PAREN ID idList RIGHT_PAREN
+	test(tokens[iter], ID);
+	Predicate preds = Predicate(tokens[iter-1].get_value());
+	test(tokens[iter], LEFT_PAREN);
+	test(tokens[iter], ID);
+	Paramter param = Parameter(tokens[iter-1]);
+	preds.add_to_params(param);
+	idList(preds);
+	test(tokens[iter], RIGHT_PAREN);
+}
+
 void Parser::datalog_parse()
 {
 	test(tokens[iter],SCHEMES);
 	test(tokens[iter],COLON);
-	//scheme();
+	scheme();
 	//schemeList();
 	test(tokens[iter],FACTS);
 	test(tokens[iter],COLON);
