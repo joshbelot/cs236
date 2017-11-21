@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "token.h"
+#include "predicate.h"
 
 using namespace std;
 
