@@ -30,7 +30,7 @@ void Parser::scheme()
 	Predicate preds = Predicate(tokens[iter-1].get_value());
 	test(tokens[iter], LEFT_PAREN);
 	test(tokens[iter], ID);
-	Paramter param = Parameter(tokens[iter-1]);
+	Parameter param = Parameter(tokens[iter-1]);
 	preds.add_to_params(param);
 	idList(preds);
 	test(tokens[iter], RIGHT_PAREN);

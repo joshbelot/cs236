@@ -2,23 +2,23 @@
 
 using namespace std;
 
-Predicate(string name)
+Predicate::Predicate(string name)
 {
 	this->name = name;
 	vector<Parameter> params;
 }
 
-void give_name(string name)
+void Predicate::give_name(string name)
 {
 	this->name = name;
 }
 
-void add_to_params(Parameter param)
+void Predicate::add_to_params(Parameter param)
 {
 	params.push_back(param);
 }
 
-string toString()
+string Predicate::toString()
 {
 	stringstream ss;
 	ss << name << "(";
@@ -26,38 +26,38 @@ string toString()
 	{
 		if(i == (params.size() - 1))
 		{
-			ss << params[i].get_value();
+			ss << params[i].get_param_value();
 		}
 		else
 		{
-			ss << params[i].get_value(); << ",";
+			ss << params[i].get_param_value() << ",";
 		}
 	}
 	ss << ")";
 	return ss.str();
 }
 
-string get_name()
+string Predicate::get_name()
 {
 	return name;
 }
 
-Paramter get_param(int i)
+Parameter Predicate::get_param(int i)
 {
 	return params[i];
 }
 
-int get_size()
+int Predicate::get_size()
 {
 	return params.size();
 }
 
-vector<string> get_params_as_strings()
+vector<string> Predicate::get_params_as_strings()
 {
 	vector<string> param_strings;
 	for(int i = 0; i < params.size(); i++)
 	{
-		param_strings.push_back(params[i].get_value());
+		param_strings.push_back(params[i].get_param_value());
 	}
 	return param_strings;
 }

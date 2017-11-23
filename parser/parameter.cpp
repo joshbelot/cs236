@@ -2,24 +2,24 @@
 
 using namespace std;
 
-Paramter::Paramter(Token tok)
+Parameter::Parameter(Token tok)
 {
-	this-> param_value = param_value;
-	this->param_type =  param_type;
-	this->param_string = param_string;
+	this->param_value = tok.get_value();
+	this->param_type = tok.get_type();
+	this->param_string = tok.toStringType();
 }
 
-string get_param_value()
+string Parameter::get_param_value()
 {
 	return param_value;
 }
 
-type get_param_type()
+type Parameter::get_param_type()
 {
 	return param_type;
 }
 
-string get_param_string()
+string Parameter::get_param_string()
 {
 	return param_string;
 }

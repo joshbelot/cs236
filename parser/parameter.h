@@ -1,4 +1,5 @@
 #pragma once
+#include "lexer.h"
 
 using namespace std;
 
@@ -9,7 +10,7 @@ private:
 	type param_type;
 	string param_string;
 public:
-	Paramter(Token tok);
+	Parameter(Token tok);
 	string get_param_value();
 	type get_param_type();
 	string get_param_string();
