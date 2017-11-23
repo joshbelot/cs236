@@ -15,5 +15,9 @@ public:
 	void test(Token tok1, type tok2);
 	void idList(Predicate &preds);
 	void scheme();
+	void schemeList();
+	void stringList(Predicate &preds);
+	void fact();
+	void factList();
 	void datalog_parse();
 };

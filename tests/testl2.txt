@@ -1,1 +1,1 @@
-Schemes: A12345(B23456, C34567, D45678) Facts: Rules: Queries:
+Schemes: A12345(B23456, C34567, D45678) B23456(C34567) Facts: Rules: Queries:
