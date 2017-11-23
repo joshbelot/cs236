@@ -23,6 +23,19 @@ void Parser::test(Token tok1, type tok2)
 	}
 }
 
+void Parser::idList(Predicate &preds)
+{
+	//COMMA ID idList | lambda
+	if(tokens[iter].get_type() != RIGHT_PAREN)
+	{
+		test(tokens[iter], COMMA);
+		test(tokens[iter], ID);
+		Parameter param = Parameter(tokens[iter-1]);
+		preds.add_to_params(param);
+		idList(preds);
+	}
+}
+
 void Parser::scheme()
 {
 	//ID LEFT_PAREN ID idList RIGHT_PAREN

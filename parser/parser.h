@@ -13,6 +13,7 @@ private:
 public:
 	Parser(vector<Token> tokens);
 	void test(Token tok1, type tok2);
+	void idList(Predicate &preds);
 	void scheme();
 	void datalog_parse();
 };
