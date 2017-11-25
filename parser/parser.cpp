@@ -16,6 +16,11 @@ void Parser::test(Token tok1, type tok2)
 		iter++;
 		return;
 	}
+	// else if(tok1.get_type() == COMMENT)
+	// {
+	// 	iter++;
+	// 	test(tokens[iter], tok2);
+	// }
 	else
 	{
 		cout << "Failure!\n" << tok1.toStringToken();

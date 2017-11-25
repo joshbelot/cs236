@@ -1,1 +1,18 @@
-Schemes: A12345(B23456, C34567, D45678) B23456(C34567) Facts: F12('string!', 'also a string!', 'is this a string?'). Rules: HasSameAddress(X,Y) :- snap(A,X,B,C),snap(D,Y,B,(E+C)). Queries: HasSameAddress('Snoopy',Who)?
+Schemes:
+  snap(S,N,A,P)
+
+#comment
+
+  HasSameAddress(X,Y)
+
+Facts: #comment
+  snap('12345','C. Brown','12 Apple','555-1234').
+  snap('33333','Snoopy','12 Apple','555-1234').
+
+Rules:
+  HasSameAddress(X,Y) :- snap(A,X,B,C),snap(D,Y,B,(E+C)).
+
+#comment
+
+Queries:
+  HasSameAddress('Snoopy',Who)?
