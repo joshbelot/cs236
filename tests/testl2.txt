@@ -1,1 +1,1 @@
-Schemes: A12345(B23456, C34567, D45678) B23456(C34567) Facts: F12('string!', 'also a string!', 'is this a string?'). Rules: Queries:
+Schemes: A12345(B23456, C34567, D45678) B23456(C34567) Facts: F12('string!', 'also a string!', 'is this a string?'). Rules: HasSameAddress(X,Y) :- snap(A,X,B,C),snap(D,Y,B,(E+C)). Queries: HasSameAddress('Snoopy',Who)?

@@ -29,5 +29,8 @@ public:
 	void predicateList(Rule &newRule);
 	void rule();
 	void ruleList();
+	Predicate predicate();
+	void query();
+	void queryList();
 	void datalog_parse();
 };

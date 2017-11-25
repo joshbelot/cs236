@@ -217,6 +217,35 @@ void Parser::ruleList()
 	
 }
 
+Predicate Parser::predicate()
+{
+	//ID LEFT_PAREN parameter parameterList RIGHT_PAREN
+	test(tokens[iter], ID);
+	test(tokens[iter], LEFT_PAREN);
+	Predicate pred = Predicate(tokens[iter-2].get_value());
+	parameter(pred);
+	parameterList(pred);
+	test(tokens[iter], RIGHT_PAREN);
+	return pred;
+}
+
+void Parser::query()
+{
+	//predicate Q_MARK
+	Predicate pred = predicate();
+	test(tokens[iter], Q_MARK);
+}
+
+void Parser::queryList()
+{
+	//query queryList | lambda
+	if(tokens[iter].get_type() != E_O_F)
+	{
+		query();
+		queryList();
+	}
+}
+
 void Parser::datalog_parse()
 {
 	test(tokens[iter],SCHEMES);
@@ -231,8 +260,8 @@ void Parser::datalog_parse()
 	ruleList();
 	test(tokens[iter],QUERIES);
 	test(tokens[iter],COLON);
-	//query();
-	//queryList();
+	query();
+	queryList();
 	test(tokens[iter],E_O_F);
 	cout << "Success!\n";
 }
