@@ -7,6 +7,16 @@ Parser::Parser(vector<Token> tokens)
 {
 	this->tokens = tokens;
 	iter = 0;
+	numSchemes = 0;
+	numFacts = 0;
+	numRules = 0;
+	numQuer = 0;
+	numDomain = 0;
+	string schemes = "";
+	string facts = "";
+	string rules = "";
+	string quers = "";
+	string domains = "";
 }
 
 void Parser::test(Token tok1, type tok2)
@@ -36,7 +46,9 @@ void Parser::idList(Predicate &preds)
 	if(tokens[iter].get_type() != RIGHT_PAREN)
 	{
 		test(tokens[iter], COMMA);
+		add_to_schemes(tokens[iter-1], schemes);
 		test(tokens[iter], ID);
+		add_to_schemes(tokens[iter-1], schemes);
 		Parameter param = Parameter(tokens[iter-1]);
 		preds.add_to_params(param);
 		idList(preds);
@@ -46,14 +58,21 @@ void Parser::idList(Predicate &preds)
 void Parser::scheme()
 {
 	//ID LEFT_PAREN ID idList RIGHT_PAREN
+	schemes+="  ";
 	test(tokens[iter], ID);
 	Predicate preds = Predicate(tokens[iter-1].get_value());
+	add_to_schemes(tokens[iter-1], schemes);
 	test(tokens[iter], LEFT_PAREN);
+	add_to_schemes(tokens[iter-1], schemes);
 	test(tokens[iter], ID);
 	Parameter param = Parameter(tokens[iter-1]);
 	preds.add_to_params(param);
+	add_to_schemes(tokens[iter-1], schemes);
 	idList(preds);
 	test(tokens[iter], RIGHT_PAREN);
+	add_to_schemes(tokens[iter-1], schemes);
+	schemes+="\n";
+	numSchemes++;
 }
 
 void Parser::schemeList()
@@ -91,6 +110,7 @@ void Parser::fact()
 	stringList(preds);
 	test(tokens[iter], RIGHT_PAREN);
 	test(tokens[iter], PERIOD);
+	numFacts++;
 }
 
 void Parser::factList()
@@ -222,6 +242,7 @@ void Parser::rule()
 	pred_to_rules(newRule);
 	predicateList(newRule);
 	test(tokens[iter], PERIOD);
+	numRules++;
 }
 
 void Parser::ruleList()
@@ -262,6 +283,7 @@ void Parser::query()
 	//predicate Q_MARK
 	Predicate pred = predicate();
 	test(tokens[iter], Q_MARK);
+	numQuer++;
 }
 
 void Parser::queryList()
@@ -304,4 +326,23 @@ void Parser::datalog_parse()
 	queryList();
 	test(tokens[iter], E_O_F);
 	cout << "Success!\n";
+	printDatalog();
+}
+
+void Parser::add_to_schemes(Token tok, string &content)
+{
+	if(tok.get_type() != COMMENT)
+	{
+		content+=tok.get_value();
+	}
+}
+
+void Parser::printDatalog()
+{
+	cout << "Schemes(" << numSchemes << "):\n";
+	cout << schemes;
+	cout << "Facts(" << numFacts << "):\n";
+	cout << "Rules(" << numRules << "):\n";
+	cout << "Queries(" << numQuer << "):\n";
+	cout << "Domain(" << numDomain << "):\n";
 }

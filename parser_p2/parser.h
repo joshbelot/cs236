@@ -11,6 +11,16 @@ class Parser
 private:
 	vector<Token> tokens;
 	int iter;
+	int numSchemes;
+	int numFacts;
+	int numRules;
+	int numQuer;
+	int numDomain;
+	string schemes;
+	string facts;
+	string rules;
+	string quers;
+	string domains;
 public:
 	Parser(vector<Token> tokens);
 	void test(Token tok1, type tok2);
@@ -33,4 +43,6 @@ public:
 	void query();
 	void queryList();
 	void datalog_parse();
+	void add_to_schemes(Token tok, string &content);
+	void printDatalog();
 };
