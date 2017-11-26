@@ -11,18 +11,20 @@ Parser::Parser(vector<Token> tokens)
 
 void Parser::test(Token tok1, type tok2)
 {
+	//cout << tok1.toStringType() << " and " << tok2 << "\n";
 	if(tok1.get_type() == tok2)
 	{
 		iter++;
 		return;
 	}
-	// else if(tok1.get_type() == COMMENT)
-	// {
-	// 	iter++;
-	// 	test(tokens[iter], tok2);
-	// }
+	else if(tok1.get_type() == COMMENT)
+	{
+		iter++;
+		test(tokens[iter], tok2);
+	}
 	else
 	{
+		//cout << tok1.toStringType() << " and " << tok2 << "\n";
 		cout << "Failure!\n" << tok1.toStringToken();
 		exit(EXIT_FAILURE);
 	}
@@ -93,10 +95,21 @@ void Parser::fact()
 
 void Parser::factList()
 {
-	if(tokens[iter].get_type() != RULES)
+	if(tokens[iter].get_type() != COMMENT)
 	{
-		fact();
-		factList();
+		if(tokens[iter].get_type() != RULES)
+		{
+			fact();
+			factList();
+		}
+	}
+	else
+	{
+		if(tokens[iter+1].get_type() != RULES)
+		{
+			fact();
+			factList();
+		}
 	}
 }
 
@@ -214,12 +227,22 @@ void Parser::rule()
 void Parser::ruleList()
 {
 	//rule ruleList | lambda
-	if(tokens[iter].get_type() != QUERIES)
+	if(tokens[iter].get_type() != COMMENT)
 	{
-		rule();
-		ruleList();
+		if(tokens[iter].get_type() != QUERIES)
+		{
+			rule();
+			ruleList();
+		}
 	}
-	
+	else
+	{
+		if(tokens[iter+1].get_type() != QUERIES)
+		{
+			rule();
+			ruleList();
+		}
+	}	
 }
 
 Predicate Parser::predicate()
@@ -244,29 +267,41 @@ void Parser::query()
 void Parser::queryList()
 {
 	//query queryList | lambda
-	if(tokens[iter].get_type() != E_O_F)
+	if(tokens[iter].get_type() != COMMENT)
 	{
-		query();
-		queryList();
+		if(tokens[iter].get_type() != E_O_F)
+		{
+			query();
+			queryList();
+		}
 	}
+	else
+	{
+		if(tokens[iter+1].get_type() != E_O_F)
+		{
+			query();
+			queryList();
+		}
+	}
+	
 }
 
 void Parser::datalog_parse()
 {
-	test(tokens[iter],SCHEMES);
-	test(tokens[iter],COLON);
+	test(tokens[iter], SCHEMES);
+	test(tokens[iter], COLON);
 	scheme();
 	schemeList();
-	test(tokens[iter],FACTS);
-	test(tokens[iter],COLON);
+	test(tokens[iter], FACTS);
+	test(tokens[iter], COLON);
 	factList();
-	test(tokens[iter],RULES);
-	test(tokens[iter],COLON);
+	test(tokens[iter], RULES);
+	test(tokens[iter], COLON);
 	ruleList();
-	test(tokens[iter],QUERIES);
-	test(tokens[iter],COLON);
+	test(tokens[iter], QUERIES);
+	test(tokens[iter], COLON);
 	query();
 	queryList();
-	test(tokens[iter],E_O_F);
+	test(tokens[iter], E_O_F);
 	cout << "Success!\n";
 }
