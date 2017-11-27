@@ -16,7 +16,7 @@ Parser::Parser(vector<Token> tokens)
 	string facts = "";
 	string rules = "";
 	string quers = "";
-	string domains = "";
+	vector<string> domains;
 }
 
 void Parser::test(Token tok1, type tok2)
@@ -106,6 +106,10 @@ void Parser::stringList(Predicate &preds, string &section)
 		test(tokens[iter], COMMA);
 		add_to_section(tokens[iter-1], section);
 		test(tokens[iter], STRING);
+		string dom = tokens[iter-1].get_value();
+		cout << dom << "\n";
+		//This is the line that causes the trouble.
+		//domains.push_back(dom);
 		add_to_section(tokens[iter-1], section);
 		Parameter param = Parameter(tokens[iter-1]);
 		preds.add_to_params(param);
@@ -374,6 +378,7 @@ void Parser::datalog_parse()
 	queryList();
 	test(tokens[iter], E_O_F);
 	cout << "Success!\n";
+	numDomain = domains.size();
 	printDatalog();
 }
 
@@ -396,5 +401,5 @@ void Parser::printDatalog()
 	cout << "Queries(" << numQuer << "):\n";
 	cout << quers;
 	cout << "Domain(" << numDomain << "):\n";
-	cout << domains;
+	//cout << domains;
 }
