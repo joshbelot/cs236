@@ -20,7 +20,7 @@ private:
 	string facts;
 	string rules;
 	string quers;
-	string domains;
+	set<string> domains;
 public:
 	Parser(vector<Token> tokens);
 	void test(Token tok1, type tok2);

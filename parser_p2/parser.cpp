@@ -1,5 +1,6 @@
 #include "parser.h"
 #include <vector>
+#include <set>
 
 using namespace std;
 
@@ -16,7 +17,7 @@ Parser::Parser(vector<Token> tokens)
 	string facts = "";
 	string rules = "";
 	string quers = "";
-	vector<string> domains;
+	set<string> domains;
 }
 
 void Parser::test(Token tok1, type tok2)
@@ -107,9 +108,9 @@ void Parser::stringList(Predicate &preds, string &section)
 		add_to_section(tokens[iter-1], section);
 		test(tokens[iter], STRING);
 		string dom = tokens[iter-1].get_value();
-		cout << dom << "\n";
+		//cout << dom << "\n";
 		//This is the line that causes the trouble.
-		//domains.push_back(dom);
+		domains.insert(dom);
 		add_to_section(tokens[iter-1], section);
 		Parameter param = Parameter(tokens[iter-1]);
 		preds.add_to_params(param);
@@ -401,5 +402,8 @@ void Parser::printDatalog()
 	cout << "Queries(" << numQuer << "):\n";
 	cout << quers;
 	cout << "Domain(" << numDomain << "):\n";
-	//cout << domains;
+	for(auto e : domains)
+	{
+		cout << "  " << e << "\n";
+	}
 }
