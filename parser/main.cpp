@@ -10,8 +10,7 @@ using namespace std;
 
 /*
 Questions for the TAs:
-1) When I hit a bad parse, should the program keep parsing the others? Or does it quit?
-2) Does my lexer work alright? Can I run it against the pass-off real quick?
+1) Does my lexer work alright? Can I run it against the pass-off real quick?
 */
 
 int main()
