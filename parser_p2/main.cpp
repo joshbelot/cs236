@@ -8,6 +8,11 @@
 
 using namespace std;
 
+/*
+Questions for the TAs
+1) Should the final domain end with a new line?
+*/
+
 int main(int argc, char** argv)
 {
 	//Designate file for token analysis

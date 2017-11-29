@@ -109,7 +109,6 @@ void Parser::stringList(Predicate &preds, string &section)
 		test(tokens[iter], STRING);
 		string dom = tokens[iter-1].get_value();
 		//cout << dom << "\n";
-		//This is the line that causes the trouble.
 		domains.insert(dom);
 		add_to_section(tokens[iter-1], section);
 		Parameter param = Parameter(tokens[iter-1]);
@@ -128,6 +127,9 @@ void Parser::fact()
 	test(tokens[iter], LEFT_PAREN);
 	add_to_section(tokens[iter-1], facts);
 	test(tokens[iter], STRING);
+	string dom = tokens[iter-1].get_value();
+	//cout << dom << "\n";
+	domains.insert(dom);
 	Parameter param = Parameter(tokens[iter-1]);
 	preds.add_to_params(param);
 	add_to_section(tokens[iter-1], facts);
