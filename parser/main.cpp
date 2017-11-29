@@ -8,46 +8,58 @@
 
 using namespace std;
 
-int main(int argc, char** argv)
+/*
+Questions for the TAs:
+1) When I hit a bad parse, should the program keep parsing the others? Or does it quit?
+2) Does my lexer work alright? Can I run it against the pass-off real quick?
+*/
+
+int main()
 {
-	//Designate file for token analysis
-	ifstream in_file;
-
-	//Open the selected file and put it into a string stream.
-	in_file.open(argv[1]);
-	if(in_file.is_open())
+	for(int i = 0; i < 10; i++)
 	{
-		string s;
-		stringstream ss;
-		while(getline(in_file, s))
+		//Designate file for token analysis
+		ifstream in_file;
+
+		string numFile = to_string(i);
+		string nameFile = numFile + ".txt";
+
+		//Open the selected file and put it into a string stream.
+		in_file.open(nameFile);
+		if(in_file.is_open())
 		{
-			if(!in_file.eof())
+			string s;
+			stringstream ss;
+			while(getline(in_file, s))
 			{
-				ss << s << endl;
+				if(!in_file.eof())
+				{
+					ss << s << endl;
+				}
+				else
+				{
+					ss << s;
+				}
 			}
-			else
-			{
-				ss << s;
-			}
+
+			//Convert stringstream to string
+			string resultString = ss.str();
+
+			//Use resultString to create Lexer object
+			Lexer lex = Lexer(resultString);
+
+			//Call scan function, which calls the run_all_DFA function.
+			//This actually performs the token extraction, as well as
+			//pushing the found tokens onto the tokens vector.
+			lex.scan();
+
+			Parser pars = Parser(lex.return_vector());
+			pars.datalog_parse();
 		}
-
-		//Convert stringstream to string
-		string resultString = ss.str();
-
-		//Use resultString to create Lexer object
-		Lexer lex = Lexer(resultString);
-
-		//Call scan function, which calls the run_all_DFA function.
-		//This actually performs the token extraction, as well as
-		//pushing the found tokens onto the tokens vector.
-		lex.scan();
-
-		Parser pars = Parser(lex.return_vector());
-		pars.datalog_parse();
-	}
-	else
-	{
-		cout << "Could not open specific file.\n";
+		else
+		{
+			cout << "Could not open specific file.\n";
+		}
 	}
 	return 0;
 }
