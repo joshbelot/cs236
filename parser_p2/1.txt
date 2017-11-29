@@ -1,0 +1,33 @@
+#Consecutive comments. Should pass.
+#Consecutive comment.
+#consecutive
+Schemes:
+    snap(S,N,A,P) 
+    NameHasID(N,S)
+ 
+#comment
+#consecutive
+
+Facts:
+    snap('12345','C. Brown','12 Apple','555-1234').
+    snap('67890','L. Van Pelt','34 Pear','555-5678').
+ 
+#comment
+#consecutive
+
+Rules:
+    NameHasID(N,S) :- snap(S,N,A,P).
+ 
+  #|multi
+line|#
+#comment
+#consecutive
+
+Queries:
+    NameHasID('Snoopy',Id)?
+
+#comment
+#|multi
+line|#
+
+

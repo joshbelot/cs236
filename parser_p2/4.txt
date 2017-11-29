@@ -1,0 +1,19 @@
+#Comments inside parenthetical statements - should fail.
+Schemes:
+  snap(S,#commentN,A,P)
+
+#comment
+
+  HasSameAddress(X,Y)
+
+Facts: #comment
+  snap('12345','C. #comment Brown','12 Apple','555-1234').
+  snap('33333','Snoopy','12 Apple','555-1234').
+
+Rules:
+  HasSameAddress(X,#commentY) :- snap(A,X,B,C),snap(D,Y,B,(E+C)).
+
+#comment
+
+Queries:
+  HasSameAddress('Snoopy',Who)?

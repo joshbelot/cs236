@@ -32,6 +32,7 @@ void Parser::test(Token tok1, type tok2)
 	{
 		iter++;
 		test(tokens[iter], tok2);
+		cout << "Passed comment.\n";
 	}
 	else
 	{
