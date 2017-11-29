@@ -32,7 +32,7 @@ void Parser::test(Token tok1, type tok2)
 	{
 		iter++;
 		test(tokens[iter], tok2);
-		cout << "Passed comment.\n";
+		//cout << "Passed comment.\n";
 	}
 	else
 	{
@@ -81,22 +81,16 @@ void Parser::scheme()
 
 void Parser::schemeList()
 {
-	if(tokens[iter].get_type() != COMMENT)
+	//scheme schemeList | lamda
+	if(tokens[iter].get_type() != FACTS && tokens[iter].get_type() != COMMENT)
 	{
-		//scheme schemeList | lamda
-		if(tokens[iter].get_type() != FACTS)
-		{
-			scheme();
-			schemeList();
-		}
+		scheme();
+		schemeList();
 	}
-	else
+	else if(tokens[iter].get_type() == COMMENT)
 	{
-		if(tokens[iter+1].get_type() != FACTS)
-		{
-			scheme();
-			schemeList();
-		}
+		iter++;
+		schemeList();
 	}
 }
 
@@ -145,21 +139,15 @@ void Parser::fact()
 
 void Parser::factList()
 {
-	if(tokens[iter].get_type() != COMMENT)
+	if(tokens[iter].get_type() != RULES && tokens[iter].get_type() != COMMENT)
 	{
-		if(tokens[iter].get_type() != RULES)
-		{
-			fact();
-			factList();
-		}
+		fact();
+		factList();
 	}
-	else
+	else if(tokens[iter].get_type() == COMMENT)
 	{
-		if(tokens[iter+1].get_type() != RULES)
-		{
-			fact();
-			factList();
-		}
+		iter++;
+		factList();
 	}
 }
 
@@ -298,22 +286,16 @@ void Parser::rule()
 void Parser::ruleList()
 {
 	//rule ruleList | lambda
-	if(tokens[iter].get_type() != COMMENT)
+	if(tokens[iter].get_type() != QUERIES && tokens[iter].get_type() != COMMENT)
 	{
-		if(tokens[iter].get_type() != QUERIES)
-		{
-			rule();
-			ruleList();
-		}
+		rule();
+		ruleList();
 	}
-	else
+	else if(tokens[iter].get_type() == COMMENT)
 	{
-		if(tokens[iter+1].get_type() != QUERIES)
-		{
-			rule();
-			ruleList();
-		}
-	}	
+		iter++;
+		ruleList();
+	}
 }
 
 Predicate Parser::predicate(string &section)
@@ -345,23 +327,16 @@ void Parser::query()
 void Parser::queryList()
 {
 	//query queryList | lambda
-	if(tokens[iter].get_type() != COMMENT)
+	if(tokens[iter].get_type() != E_O_F && tokens[iter].get_type() != COMMENT)
 	{
-		if(tokens[iter].get_type() != E_O_F)
-		{
-			query();
-			queryList();
-		}
+		query();
+		queryList();
 	}
-	else
+	else if(tokens[iter].get_type() == COMMENT)
 	{
-		if(tokens[iter+1].get_type() != E_O_F)
-		{
-			query();
-			queryList();
-		}
-	}
-	
+		iter++;
+		queryList();
+	}	
 }
 
 void Parser::datalog_parse()

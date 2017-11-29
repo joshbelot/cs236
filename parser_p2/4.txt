@@ -1,6 +1,7 @@
 #Comments inside parenthetical statements - should fail.
 Schemes:
-  snap(S,#commentN,A,P)
+  snap(S,#comment
+N,A,P)
 
 #comment
 
