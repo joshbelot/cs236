@@ -1,3 +1,4 @@
+#Other characters in place of + and * in expressions - should fail.
 Schemes:
   snap(S,N,A,P)
 
@@ -10,7 +11,7 @@ Facts: #comment
   snap('33333','Snoopy','12 Apple','555-1234').
 
 Rules:
-  HasSameAddress(X,Y) :- snap(A,X,B,C),snap(D,Y,B,(E+C)).
+  HasSameAddress(X,Y) :- snap(A,X,B,C),snap(D,Y,B,(E+C)),snap(D,X,B,(F-D)).
 
 #comment
 

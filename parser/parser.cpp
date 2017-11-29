@@ -32,11 +32,12 @@ void Parser::test(Token tok1, type tok2)
 	{
 		iter++;
 		test(tokens[iter], tok2);
+		//cout << "Passed comment.\n";
 	}
 	else
 	{
 		//cout << tok1.toStringType() << " and " << tok2 << "\n";
-		cout << "Failure!\n" << tok1.toStringToken();
+		cout << "Failure!\n  " << tok1.toStringToken();
 		exit(EXIT_FAILURE);
 	}
 }
@@ -80,22 +81,16 @@ void Parser::scheme()
 
 void Parser::schemeList()
 {
-	if(tokens[iter].get_type() != COMMENT)
+	//scheme schemeList | lamda
+	if(tokens[iter].get_type() != FACTS && tokens[iter].get_type() != COMMENT)
 	{
-		//scheme schemeList | lamda
-		if(tokens[iter].get_type() != FACTS)
-		{
-			scheme();
-			schemeList();
-		}
+		scheme();
+		schemeList();
 	}
-	else
+	else if(tokens[iter].get_type() == COMMENT)
 	{
-		if(tokens[iter+1].get_type() != FACTS)
-		{
-			scheme();
-			schemeList();
-		}
+		iter++;
+		schemeList();
 	}
 }
 
@@ -109,7 +104,6 @@ void Parser::stringList(Predicate &preds, string &section)
 		test(tokens[iter], STRING);
 		string dom = tokens[iter-1].get_value();
 		//cout << dom << "\n";
-		//This is the line that causes the trouble.
 		domains.insert(dom);
 		add_to_section(tokens[iter-1], section);
 		Parameter param = Parameter(tokens[iter-1]);
@@ -128,6 +122,9 @@ void Parser::fact()
 	test(tokens[iter], LEFT_PAREN);
 	add_to_section(tokens[iter-1], facts);
 	test(tokens[iter], STRING);
+	string dom = tokens[iter-1].get_value();
+	//cout << dom << "\n";
+	domains.insert(dom);
 	Parameter param = Parameter(tokens[iter-1]);
 	preds.add_to_params(param);
 	add_to_section(tokens[iter-1], facts);
@@ -142,21 +139,15 @@ void Parser::fact()
 
 void Parser::factList()
 {
-	if(tokens[iter].get_type() != COMMENT)
+	if(tokens[iter].get_type() != RULES && tokens[iter].get_type() != COMMENT)
 	{
-		if(tokens[iter].get_type() != RULES)
-		{
-			fact();
-			factList();
-		}
+		fact();
+		factList();
 	}
-	else
+	else if(tokens[iter].get_type() == COMMENT)
 	{
-		if(tokens[iter+1].get_type() != RULES)
-		{
-			fact();
-			factList();
-		}
+		iter++;
+		factList();
 	}
 }
 
@@ -190,7 +181,7 @@ void Parser::oper(Predicate &pred)
 	}
 	else
 	{
-		cout << "Failure!\n" << tokens[iter].toStringToken();
+		cout << "Failure!\n  " << tokens[iter].toStringToken();
 		exit(EXIT_FAILURE);
 	}
 }
@@ -230,7 +221,7 @@ void Parser::parameter(Predicate &pred, string &section)
 	}
 	else
 	{
-		cout << "Failure!\n" << tokens[iter].toStringToken();
+		cout << "Failure!\n  " << tokens[iter].toStringToken();
 		exit(EXIT_FAILURE);
 	}
 }
@@ -295,22 +286,16 @@ void Parser::rule()
 void Parser::ruleList()
 {
 	//rule ruleList | lambda
-	if(tokens[iter].get_type() != COMMENT)
+	if(tokens[iter].get_type() != QUERIES && tokens[iter].get_type() != COMMENT)
 	{
-		if(tokens[iter].get_type() != QUERIES)
-		{
-			rule();
-			ruleList();
-		}
+		rule();
+		ruleList();
 	}
-	else
+	else if(tokens[iter].get_type() == COMMENT)
 	{
-		if(tokens[iter+1].get_type() != QUERIES)
-		{
-			rule();
-			ruleList();
-		}
-	}	
+		iter++;
+		ruleList();
+	}
 }
 
 Predicate Parser::predicate(string &section)
@@ -342,23 +327,16 @@ void Parser::query()
 void Parser::queryList()
 {
 	//query queryList | lambda
-	if(tokens[iter].get_type() != COMMENT)
+	if(tokens[iter].get_type() != E_O_F && tokens[iter].get_type() != COMMENT)
 	{
-		if(tokens[iter].get_type() != E_O_F)
-		{
-			query();
-			queryList();
-		}
+		query();
+		queryList();
 	}
-	else
+	else if(tokens[iter].get_type() == COMMENT)
 	{
-		if(tokens[iter+1].get_type() != E_O_F)
-		{
-			query();
-			queryList();
-		}
-	}
-	
+		iter++;
+		queryList();
+	}	
 }
 
 void Parser::datalog_parse()

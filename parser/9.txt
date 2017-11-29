@@ -1,3 +1,4 @@
+#Exceptional but correct case - should pass. (Need to build one).
 Schemes:
   snap(S,N,A,P)
 
