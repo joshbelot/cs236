@@ -1,4 +1,4 @@
-#Exceptional but correct case - should pass. (Need to build one).
+#Really bad comments within parenthetical statements
 Schemes:
   snap(S,N,A,P)
 
@@ -11,7 +11,9 @@ Facts: #comment
   snap('33333','Snoopy','12 Apple','555-1234').
 
 Rules:
-  HasSameAddress(X,Y) :- snap(A,X,B,C),snap(D,Y,B,(E+C)).
+  HasSameAddress(X,Y) :- snap(A,X#|this is a mu
+ltiline
+comment|#,B,C),snap(D,Y,B,(E+C)).
 
 #comment
 
