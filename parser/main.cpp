@@ -53,7 +53,15 @@ int main()
 			lex.scan();
 
 			Parser pars = Parser(lex.return_vector());
-			pars.datalog_parse();
+
+			try
+			{
+				pars.datalog_parse();
+			}
+			catch(Token tok1)
+			{
+				cout << "  " << tok1.toStringToken();
+			}
 		}
 		else
 		{
