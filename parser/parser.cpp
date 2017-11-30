@@ -181,6 +181,11 @@ void Parser::oper(Predicate &pred)
 		add_to_section(tokens[iter], rules);
 		iter++;
 		return;
+	}else if(tokens[iter].get_type() == COMMENT)
+	{
+		iter++;
+		oper(pred);
+		//cout << "Passed comment.\n";
 	}
 	else
 	{
@@ -224,6 +229,12 @@ void Parser::parameter(Predicate &pred, string &section)
 		add_to_section(tokens[iter], section);
 		iter++;
 		return;
+	}
+	else if(tokens[iter].get_type() == COMMENT)
+	{
+		iter++;
+		parameter(pred, section)
+		//cout << "Passed comment.\n";
 	}
 	else
 	{
