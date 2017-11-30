@@ -1,4 +1,4 @@
-#? and . swapped - should fail.
+#? and . swapped - should fail on ? line 10.
 Schemes:
   snap(S,N,A,P)
 

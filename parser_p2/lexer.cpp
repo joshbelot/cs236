@@ -80,15 +80,15 @@ void Lexer::scan()
 				{
 					output_list.push_back(Token(best,s,result_num));
 				}
-				else if(best == COMMENT)
-				{
-					output_list.push_back(Token(best,s,result_num));
-				}
+				// else if(best == COMMENT)
+				// {
+				// 	output_list.push_back(Token(best,s,result_num));
+				// }
 				else if(best == UNDEF)
 				{
 					output_list.push_back(Token(best,s,result_num));
 				}
-				else
+				else if(best != COMMENT)
 				{
 					output_list.push_back(Token(best,s,result_num));
 				}
@@ -598,7 +598,7 @@ void Lexer::comment()
 
 void Lexer::whitespace()
 {
-	if(contents[0] == '\n' || contents[0] == ' ')
+	if(contents[0] == '\n' || contents[0] == ' ' || contents[0] == '\t')
 	{
 		longest_str = "";
 		longest_str_len = 1;

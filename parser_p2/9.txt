@@ -1,26 +1,29 @@
-#Multiline comment within parenthetical statements
+#Multiline comment in rule - should pass.
 Schemes:
-  snap(S,N,A,P)
+  	snap(S	,	N,A,P)
 
 #comment
 
   HasSameAddress(X,Y)
 
-Facts: #comment
-  snap('12345','C. Brown','12 Apple','555-1234').
+Facts#|multi
+line
+comment
+|#: #comment
+  snap('#comment
+12345#comment
+',#comment
+'C. Brown','12 Apple','555-1234'#comment
+).
   snap('33333','Snoopy','12 Apple','555-1234').
 
 Rules:
   HasSameAddress(X,Y) :- snap(A,X#|this is a mu
 ltiline
-comment|#,B,C),snap(D,Y,B,(E+C)).
+comment|#,B,C),snap(D,Y,B,(E+#comment
+C)).
 
 #comment
 
 Queries:
   HasSameAddress('Snoopy',Who)?
-
-#|
-Another bad
-comment
-|#

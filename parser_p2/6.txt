@@ -1,4 +1,4 @@
-#Other characters in place of + and * in expressions - should fail.
+#Other characters in place of + and * in expressions - should fail on Undefined -.
 Schemes:
   snap(S,N,A,P)
 

@@ -1,4 +1,4 @@
-#Random characters throughout - should fail.
+#Random characters throughout - should fail on snap.
 Schemes:a
   snap(S,N,A,P)
 

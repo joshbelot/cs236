@@ -37,8 +37,11 @@ void Parser::test(Token tok1, type tok2)
 	else
 	{
 		//cout << tok1.toStringType() << " and " << tok2 << "\n";
-		cout << "Failure!\n  " << tok1.toStringToken();
-		exit(EXIT_FAILURE);
+		//cout << "Failure!\n  " << tok1.toStringToken();
+		//exit(EXIT_FAILURE);
+
+		cout << "Failure!\n";
+		throw tok1;
 	}
 }
 
@@ -179,10 +182,19 @@ void Parser::oper(Predicate &pred)
 		iter++;
 		return;
 	}
+	else if(tokens[iter].get_type() == COMMENT)
+	{
+		iter++;
+		oper(pred);
+		//cout << "Passed comment.\n";
+	}
 	else
 	{
-		cout << "Failure!\n  " << tokens[iter].toStringToken();
-		exit(EXIT_FAILURE);
+		// cout << "Failure!\n  " << tokens[iter].toStringToken();
+		// exit(EXIT_FAILURE);
+
+		cout << "Failure!\n";
+		throw tokens[iter];
 	}
 }
 
@@ -219,10 +231,18 @@ void Parser::parameter(Predicate &pred, string &section)
 		iter++;
 		return;
 	}
+	else if(tokens[iter].get_type() == COMMENT)
+	{
+		iter++;
+		parameter(pred, section);
+		//cout << "Passed comment.\n";
+	}
 	else
 	{
-		cout << "Failure!\n  " << tokens[iter].toStringToken();
-		exit(EXIT_FAILURE);
+		// cout << "Failure!\n  " << tokens[iter].toStringToken();
+		// exit(EXIT_FAILURE);
+		cout << "Failure!\n";
+		throw tokens[iter];
 	}
 }
 

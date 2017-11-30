@@ -1,4 +1,4 @@
-#Comments inside parenthetical statements - should fail.
+#Comments inside parenthetical statements - should fail on Queries.
 Schemes:
   snap(S,#comment
 N,A,P)
