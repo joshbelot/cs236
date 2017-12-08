@@ -37,7 +37,32 @@ void Database::add_to_domains(string s)
 
 void Database::print()
 {
-
+	cout << "Success!\n";
+	cout << "Schemes(" << schemes.size() << "):\n";
+	for(int a = 0; a < schemes/size(); a++)
+	{
+		cout << " " << schemes[a].toString() << endl;
+	}
+	cout << "Facts(" << facts.size() << "):\n";
+	for(int b = 0; b < facts.size(); b++)
+	{
+		cout << " " << facts[b].toString() << "." << endl;
+	}
+	cout << "Rules(" << rules.size() << "):\n";
+	for(int c = 0; c < rules.size(); c++)
+	{
+		cout << " " << rules[c].toString() << endl;
+	}
+	cout << "Queries(" << queries.size() << "):\n";
+	for(int d = 0; d < queries.size(); d++)
+	{
+		cout << " " << queries[d].toString() << "?" << endl;
+	}
+	cout << "Domain(" << domain.size() << "):\n";
+	for(auto e : domain)
+	{
+		cout << " " << e << endl;
+	}
 }
 
 void Database::create_relations()
@@ -99,64 +124,174 @@ vector<Predicate> Database::return_queries()
 
 Relation Database::return_relation(int index)
 {
-
+	return relations[index];
 }
 
 Relation Database::get(string n)
 {
-
+	for(int i =0; i < relations.size(); i++)
+	{
+		if(relations[i].name == n)
+		{
+			return relations[i];
+		}
+	}
+	retun Relation("");
 }
 
 Relation& Database::get2(string n)
 {
-
+	for(int i = 0; i < relations.size(); i++)
+	{
+		if(relations[i].name == n)
+		{
+			return relations[i];
+		}
+	}
 }
 
 Relation Database::solve_query(Predicate p)
 {
-
+	Relation r = get(p.return_name());
+	vector<string> rename_to;
+	vector<string project_to;
+	vector<Pair> pairs;
+	for(int i = 0; i < p.return_size(); i++)
+	{
+		if(p.return_parameter(i).get_type() == STRING)
+		{
+			rename_to.push_back(r.schema[i]);
+			r = r.select1(r.schema[i], p.return_parameter(i).get_value());
+		}
+		if(p.return_parameter(i).get_type() == ID)
+		{
+			if(!is_found(pairs, p.return_parameter(i).get_value()))
+			{
+				rename_to.push_back(p.return_parameter(i).get_value());
+				project_to.push_back(p.return_parameter(i).get_value());
+				pairs.push_back(Pair(p.return_parameter(i).get_value(), i));
+			}
+			else
+			{
+				rename_to.push_back(r.schema[i]);
+				r = r.select2(r.schema[i], r.schema[pair_index(pairs, p.return_parameter(i).get_value())]);
+			}
+		}
+	}
+	r.rename(rename_to);
+	if(project_to.size() > 0)
+	{
+		r = r.project(project_to);
+	}
+	return r;
 }
 
 void Database::solve_queries()
 {
-
+	Relation r = Relation("new");
+	for(int i = 0; i < queries.size(); i++)
+	{
+		r = solve_query(queries[i]);
+		cout << queries[i].toString() << "? ";
+		if(is_query_all_strings(queries[i]))
+		{
+			goto next;
+		}
+		else
+		{
+			cout << "No" << endl;
+			goto next;
+		}
+		for(Tuple t : r.tuples)
+		{
+			cout << " ";
+			for(int j = 0; j < r.schema.size(); j++)
+			{
+				if(j == (r.schema.size() - 1))
+				{
+					cout << r.schema[j] << "=" << t.tuple[j] << endl;
+				}
+				else
+				{
+					cout << r.schema[j] << "=" << t.tuple[j] << ", ";
+				}
+			}
+		}
+		next:;
+	}
 }
 
 bool Database::is_found(const vector<Pair>& v, string s)
 {
-
+	for(int i = 0; i < v.size(); i++)
+	{
+		if(v[i].id == s)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 int Database::pair_index(const vector<Pair>& v, string s)
 {
-
+	for(int i = 0; i < v.size(); i++)
+	{
+		if(v[i].id == s)
+		{
+			return v[i].index;
+		}
+	}
+	return -1;
 }
 
 bool Database::is_query_all_strings(Predicate p)
 {
-
+	for(int i = 0; i < p.return_size(); i++)
+	{
+		if(p.return_parameter(i).get_type() == ID)
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
-bool Database::evaluate_rules(Rule r)
+bool Database::evaluate_rule(Rule r)
 {
-	Relation accum = Relation("name");
+	Relation accumulate = Relation("name");
 	if(r.return_size() == 1)
 	{
-		accum = solve_query(r.return_predicate());
+		accumulate = solve_query(r.return_predicate(0));
 	}
 	else
 	{
-		for(int i = 0; i < r.return_size(); i++)
+		for(unsigned int i = 0; i < r.return_size(); i++)
 		{
 			if(i == 0)
 			{
-				accum = accum.join(solve_query(r.return_predicate(i)),solve_query(r.return_predicate(i+1)))
+				accumulate = accumulate.join(solve_query(r.return_predicate(i)),solve_query(r.return_predicate(i+1)));
+				i = 1;
 			}
 			else
 			{
-				accum = accum.join(accum,solve_query(r.return_predicate))
+				accumulate = accumulate.join(accumulate,solve_query(r.return_predicate(i)));
 			}
 		}
+	}
+	accumulate = accumulate.project(r.return_head().return_parameters_as_strings());
+	unsigned int check = get(r.return_head().return_name()).tuples.size();
+	for(Tuple t : accumulate.tuples)
+	{
+		get2(r.return_head().return_name()).insert(t);
+	}
+	if(check == get(r.return_head().return_name()).tuples.size())
+	{
+		return false;
+	}
+	else
+	{
+		return true;
 	}
 }
 

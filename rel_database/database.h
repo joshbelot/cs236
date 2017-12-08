@@ -37,6 +37,6 @@ public:
 	bool is_found(const vector<Pair>& v, string s);
 	int pair_index(const vector<Pair>& v, string s);
 	bool is_query_all_strings(Predicate p);
-	bool evaluate_rules(Rule r);
+	bool evaluate_rule(Rule r);
 	void evaluate_rules();
 };

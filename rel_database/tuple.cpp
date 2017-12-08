@@ -1,22 +1,14 @@
 #include "tuple.h"
 
-Tuple::Tuple(){}
+using namespace std;
 
-Tuple::Tuple(const vector<string>& tuple_list)
+Tuple::Tuple()
 {
-	for(auto a : tuple_list)
-	{
-		this->push_back(a);	
-	}
+	size = 0;
 }
 
-string Tuple::toString()
+void Tuple::insert(string s)
 {
-	string s = "";
-	for(auto t : (*this))
-	{
-		s += t + "\t";
-	}
-	s.pop_back();
-	return s;
+	tuple.push_back(s);
+	size++;
 }

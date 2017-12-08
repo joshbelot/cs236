@@ -4,10 +4,15 @@
 
 using namespace std;
 
-class Tuple:public vector<string>
+class Tuple
 {
 public:
+	vector<string> tuple;
+	int size;
 	Tuple();
-	Tuple(const vector<string>& tuple_list);
-	string toString();
-}
+	void insert(string s);
+	bool operator< (const Tuple& r) const
+	{
+		return tuple < r.tuple;
+	}
+};
