@@ -69,13 +69,21 @@ void Parser::scheme()
 	test(tokens[iter], ID);
 	Predicate preds = Predicate(tokens[iter-1].get_value());
 	add_to_section(tokens[iter-1], schemes);
+
+	//Relation rel = Relation(tokens[iter-1].get_value());
+
 	test(tokens[iter], LEFT_PAREN);
 	add_to_section(tokens[iter-1], schemes);
+
 	test(tokens[iter], ID);
 	Parameter param = Parameter(tokens[iter-1]);
+
+	//rel.add_to_schema(tokens[iter-1].get_value());
+
 	preds.add_to_params(param);
 	add_to_section(tokens[iter-1], schemes);
 	idList(preds, schemes);
+
 	test(tokens[iter], RIGHT_PAREN);
 	add_to_section(tokens[iter-1], schemes);
 	schemes+="\n";

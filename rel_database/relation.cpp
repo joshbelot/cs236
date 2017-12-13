@@ -9,6 +9,11 @@ Relation::Relation(string name, vector<string> schema)
 	this->schema = schema;
 }
 
+void Relation::add_to_schema(string schem)
+{
+	schema.push_pack(schem);
+}
+
 /*
 void Relation::add_tuple(vector<Pair> tups)
 {

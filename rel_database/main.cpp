@@ -5,6 +5,7 @@
 #include "lexer.h"
 #include "token.h"
 #include "parser.h"
+#include "database.h"
 
 using namespace std;
 

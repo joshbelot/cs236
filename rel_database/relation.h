@@ -12,6 +12,7 @@ private:
 	string name;
 	vector<string> schema;
 public:
-	Relation(string name, vector<string> schema);
-	//add_tuple(vector<Pair> tups);
+	Relation(string name);
+	void add_to_schema(string schem);
+	//void add_tuple(vector<Pair> tups);
 };
