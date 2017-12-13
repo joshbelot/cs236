@@ -1,14 +1,11 @@
 #include "tuple.h"
 
-using namespace std;
-
-Tuple::Tuple()
+Tuple::Tuple(vector<Pair> pairs)
 {
-	size = 0;
+	this->pairs = pairs;
 }
 
-void Tuple::insert(string s)
-{
-	tuple.push_back(s);
-	size++;
-}
+// void Tuple::add_to_tuple(Pair pr)
+// {
+	
+// }
