@@ -61,6 +61,17 @@ Relation Relation::project(vector<string> attribs)
 {
 	vector<string> new_schema = attribs;
 	vector<int> indexes = return_indexes(attribs);
+	set<Tuple> new_tups;
+	for(Tuple t: tuples)
+	{
+		Tuple new_tuple = Tuple();
+		for(int i = 0; i < indexes.size(); i++)
+		{
+			new_tuple.insert(t.tuple[indexes[i]]);
+		}
+		new_tuples.insert(new_tuple);
+	}
+	return Relation(name, new_schema, new_tuples);
 }
 
 void Relation::rename(vector<string> attribs)
@@ -73,7 +84,18 @@ void Relation::rename(vector<string> attribs)
 
 vector<int> Relation::return_indexes(vector<string> attribs)
 {
-
+	vector<int> return_vector;
+	for(int i = 0; i < attribs.size(); i++)
+	{
+		for(int j = 0; j < schema.size(); j++)
+		{
+			if(attribs[i] == schema[j])
+			{
+				return_vector.push_back(j);
+				break;
+			}
+		}
+	}
 }
 
 int Relation::return_index(string attrib)
@@ -120,3 +142,19 @@ bool Relation::is_found(const vector<string>& v, string s)
 }
 
 void Relation::print()
+{
+	cout << name << endl;
+	for(string e : schema)
+	{
+		cout << e << " ";
+	}
+	cout << endl;
+	for(Tuple e : tuples)
+	{
+		for(int i = 0; i < e.size; i++)
+		{
+			cout << e.tuple[i] << " ";
+		}
+		cout << endl;
+	}
+}

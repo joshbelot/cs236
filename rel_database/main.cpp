@@ -57,6 +57,11 @@ int main(int argc, char** argv)
 		{
 			cout << "  " << tok1.toStringToken();
 		}
+		//For lab 3.1, relations, I need to manually create the parameters for a relation.
+		//Then pass them in to a new relation.
+		//Then I need to run queries against it.
+		//Nah. Just make the stupid db class. Use it simply in 3.1, 
+		//	and then actually feed it from the parser for 3.2.
 	}
 	else
 	{
