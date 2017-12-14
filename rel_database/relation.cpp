@@ -61,19 +61,22 @@ Relation Relation::select2(string attrib1, string attrib2)
 
 Relation Relation::project(vector<string> attribs)
 {
-	vector<string> new_schema = attribs;
-	vector<int> indexes = return_indexes(attribs);
-	set<Tuple> new_tups;
-	for(Tuple t : tups)
-	{
-		Tuple new_tuple = Tuple();
-		for(int i = 0; i < indexes.size(); i++)
-		{
-			new_tuple.insert(t.tuple[indexes[i]]);
-		}
-		new_tups.insert(new_tuple);
-	}
-	return Relation(name, new_schema, new_tups);
+  vector<string> new_schema = attribs;
+  vector<int> indexes = return_indexes(attribs);
+  set<Tuple> new_tups;
+
+  cout << "Tups size: " << tups.size() << endl;
+  
+  for(Tuple t : tups)
+  {
+    Tuple new_tuple = Tuple();
+    for(int i = 0; i < indexes.size(); i++)
+    {
+      new_tuple.insert(t.tuple[indexes[i]]);
+    }
+    new_tups.insert(new_tuple);
+  }
+  return Relation(name, new_schema, new_tups);
 }
 
 void Relation::rename(vector<string> attribs)

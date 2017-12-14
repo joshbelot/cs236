@@ -30,8 +30,12 @@ void test1(Relation rel)
 void test2(Relation rel)
 {
 	//project
-	vector<string> attribs = {"ONE", "TWO", "THREE"};
-	rel.project(attribs);
+	vector<string> attribs = {"One", "Three"};
+	Relation rel_proj = rel.project(attribs);
+	for(int i = 0; i < rel_proj.schema.size(); i++)
+	{
+		cout << rel_proj.schema[i] << endl;
+	}
 }
 
 // void test3()
@@ -181,7 +185,7 @@ int main(int argc, char** argv)
 	t2.insert(G);
 	t2.insert(H);
 
-	vector<string> s3 = {"1", "2", "3"};
+	vector<string> s3 = {"One", "Two", "Three"};
 	vector<string> s2 = {"one", "two"};
 
 	string name1 = "name1";
