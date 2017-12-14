@@ -5,14 +5,10 @@
 #include "lexer.h"
 #include "token.h"
 #include "parser.h"
-#include "database.h"
+#include "tuple.h"
+#include "relation.h"
 
 using namespace std;
-
-/*
-Questions for the TAs
-1) Should the final domain end with a new line?
-*/
 
 int main(int argc, char** argv)
 {
@@ -62,6 +58,69 @@ int main(int argc, char** argv)
 		//Then I need to run queries against it.
 		//Nah. Just make the stupid db class. Use it simply in 3.1, 
 		//	and then actually feed it from the parser for 3.2.
+
+		//1) Make tuples, schema, and names. 
+		Tuple A;
+		A.insert("'dog'");
+		A.insert("'cat'");
+		A.insert("'rabbit'");
+
+		Tuple B;
+		B.insert("'brother'");
+		B.insert("'sister'");
+		B.insert("'uncle'");
+
+		Tuple C;
+		A.insert("'squid'");
+		A.insert("'shark'");
+		A.insert("'stingray'");
+
+		Tuple D;
+		A.insert("'squid'");
+		A.insert("'shark'");
+		A.insert("'stingray'");
+
+		Tuple E;
+		A.insert("'mom'");
+		A.insert("'dad'");
+
+		Tuple F;
+		A.insert("'Tom'");
+		A.insert("'Jerry'");
+
+		Tuple G;
+		A.insert("'you'");
+		A.insert("'me'");
+
+		Tuple H;
+		A.insert("'this'");
+		A.insert("'that'");
+
+		set<Tuple> t3;
+		t3.insert(A);
+		t3.insert(B);
+		t3.insert(C);
+		t3.insert(D);
+
+		set<Tuple> t2;
+		t2.insert(E);
+		t2.insert(F);
+		t2.insert(G);
+		t2.insert(H);
+
+		vector<string> s3 = {"1", "2", "3"};
+		vector<string> s2 = {"one", "two"};
+
+		string name1 = "name1";
+		string name2 = "name2";
+
+		//2) Initialize relations.
+		Relation rel1 = Relation(name1, s3, t3);
+		Relation rel2 = Relation(name2, s2, t2);
+
+		//3) Make 10 test cases.
+		//4) Test 'em.
+
 	}
 	else
 	{

@@ -4,7 +4,6 @@
 // The database class pulls from here and the table class to perform the queries. 
 #pragma once
 #include "tuple.h"
-#include "pair.h"
 #include <set>
 
 using namespace std;

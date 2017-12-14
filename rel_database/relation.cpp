@@ -2,6 +2,8 @@
 // select, project, and rename.
 // Queries are made up of these three elements and a table.
 #include "relation.h"
+#include <assert.h>
+#include <iostream>
 
 using namespace std;
 
@@ -34,9 +36,9 @@ Relation Relation::select1(string attrib, string val)
 	set<Tuple> new_tups;
 	for(Tuple t : tups)
 	{
-		if(t.tuple[index] == value)
+		if(t.tuple[index] == val)
 		{
-			neW_tups.insert(t);
+			new_tups.insert(t);
 		}
 	}
 	return Relation(name, schema, new_tups);
@@ -44,7 +46,7 @@ Relation Relation::select1(string attrib, string val)
 
 Relation Relation::select2(string attrib1, string attrib2)
 {
-	int index1 = return_index(attrb1);
+	int index1 = return_index(attrib1);
 	int index2 = return_index(attrib2);
 	set<Tuple> new_tups;
 	for(Tuple t: tups)
@@ -62,16 +64,16 @@ Relation Relation::project(vector<string> attribs)
 	vector<string> new_schema = attribs;
 	vector<int> indexes = return_indexes(attribs);
 	set<Tuple> new_tups;
-	for(Tuple t: tuples)
+	for(Tuple t : tups)
 	{
 		Tuple new_tuple = Tuple();
 		for(int i = 0; i < indexes.size(); i++)
 		{
 			new_tuple.insert(t.tuple[indexes[i]]);
 		}
-		new_tuples.insert(new_tuple);
+		new_tups.insert(new_tuple);
 	}
-	return Relation(name, new_schema, new_tuples);
+	return Relation(name, new_schema, new_tups);
 }
 
 void Relation::rename(vector<string> attribs)
@@ -151,7 +153,7 @@ void Relation::print()
 		cout << e << " ";
 	}
 	cout << endl;
-	for(Tuple e : tuples)
+	for(Tuple e : tups)
 	{
 		for(int i = 0; i < e.size; i++)
 		{
