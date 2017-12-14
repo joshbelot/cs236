@@ -4,9 +4,8 @@ using namespace std;
 
 class Pair
 {
-private:
-	string attribute;
-	string value;
 public:
-	Pair(string attribute, string value);
+	Pair(string id, int index);
+	string id;
+	int index;
 };

@@ -16,4 +16,8 @@ private:
 	vector<Relation> relations;
 public:
 	Database();
+	void add_to_schema(Predicate p);
+	void add_to_facts(Predicate p);
+	void add_to_queries(Predicate p);
+	void add_to_domain(string s);
 };

@@ -1,7 +1,7 @@
 #include "pair.h"
 
-Pair::Pair(string attribute, string value)
+Pair::Pair(string id, int index)
 {
-	this->attribute = attribute;
-	this->value = value;
+	this->id = id;
+	this->index = index;
 }

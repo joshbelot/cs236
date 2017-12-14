@@ -9,3 +9,4 @@ Database::Database()
 	set<string> domain;
 	vector<Relation> relations;
 }
+

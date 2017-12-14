@@ -3,20 +3,120 @@
 // Queries are made up of these three elements and a table.
 #include "relation.h"
 
-Relation::Relation(string name, vector<string> schema)
+using namespace std;
+
+Relation::Relation(string name)
+{
+	this->name = name;
+}
+
+Relation::Relation(string name, vector<string> schema, set<Tuple> tups)
 {
 	this->name = name;
 	this->schema = schema;
+	this->tups = tups;
 }
 
-void Relation::add_to_schema(string schem)
+void Relation::insert(Tuple t)
 {
-	schema.push_pack(schem);
+	tups.insert(t);
 }
 
-/*
-void Relation::add_tuple(vector<Pair> tups)
+void Relation::add_to_schema(string s)
+{
+	schema.push_back(s);
+}
+
+Relation Relation::select1(string attrib, string val)
+{
+	//find where a tuple has the correct value.
+	int index = return_index(attrib);
+	set<Tuple> new_tups;
+	for(Tuple t : tups)
+	{
+		if(t.tuple[index] == value)
+		{
+			neW_tups.insert(t);
+		}
+	}
+	return Relation(name, schema, new_tups);
+}
+
+Relation Relation::select2(string attrib1, string attrib2)
+{
+	int index1 = return_index(attrb1);
+	int index2 = return_index(attrib2);
+	set<Tuple> new_tups;
+	for(Tuple t: tups)
+	{
+		if(t.tuple[index1] ==t.tuple[index2])
+		{
+			new_tups.insert(t);
+		}
+	}
+	return Relation(name, schema, new_tups);
+}
+
+Relation Relation::project(vector<string> attribs)
+{
+	vector<string> new_schema = attribs;
+	vector<int> indexes = return_indexes(attribs);
+}
+
+void Relation::rename(vector<string> attribs)
+{
+	//Rename changes the schema/sets the name for the columns results table.
+	//assuming the two vectors are the same size...
+	assert (attribs.size() == schema.size());
+	schema = attribs;
+}
+
+vector<int> Relation::return_indexes(vector<string> attribs)
 {
 
 }
-*/
+
+int Relation::return_index(string attrib)
+{
+	//Make sure the schema are all correct before we operate.
+	for(int i =0; i < schema.size(); i++)
+	{
+		if(schema[i] == attrib)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+vector<Pair> Relation::shared(const vector<string>& schema1, const vector<string>& schema2)
+{
+
+}
+
+vector<string> Relation::make_new_schema(const vector<string>& schema1, const vector<string>& schema2)
+{
+
+}
+
+bool Relation::compatible(Tuple t1, Tuple t2, const vector<Pair>& pairs)
+{
+
+}
+
+Tuple Relation::merge_tuples(Tuple t1, Tuple t2, const vector<Pair>& pairs, const vector<string>& new_schema)
+{
+
+}
+
+Relation Relation::join(const Relation& r1, const Relation& r2)
+{
+
+}
+
+bool Relation::is_found(const vector<string>& v, string s)
+{
+
+}
+
+void Relation::print()

@@ -50,13 +50,13 @@ int main(int argc, char** argv)
 
 		Parser pars = Parser(lex.return_vector());
 		try
-			{
-				pars.datalog_parse();
-			}
-			catch(Token tok1)
-			{
-				cout << "  " << tok1.toStringToken();
-			}
+		{
+			pars.datalog_parse();
+		}
+		catch(Token tok1)
+		{
+			cout << "  " << tok1.toStringToken();
+		}
 	}
 	else
 	{
