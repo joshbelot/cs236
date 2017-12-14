@@ -98,6 +98,7 @@ vector<int> Relation::return_indexes(vector<string> attribs)
 			}
 		}
 	}
+	return return_vector;
 }
 
 int Relation::return_index(string attrib)
