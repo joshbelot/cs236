@@ -20,4 +20,8 @@ public:
 	void add_to_facts(Predicate p);
 	void add_to_queries(Predicate p);
 	void add_to_domain(string s);
+	Relation get(string n);
+	Relation solve_query(Predicate p);
+	void solve_queries();
+	void print();
 };

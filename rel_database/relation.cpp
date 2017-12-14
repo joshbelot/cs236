@@ -111,6 +111,7 @@ int Relation::return_index(string attrib)
 	return -1;
 }
 
+/*
 vector<Pair> Relation::shared(const vector<string>& schema1, const vector<string>& schema2)
 {
 
@@ -140,6 +141,7 @@ bool Relation::is_found(const vector<string>& v, string s)
 {
 
 }
+*/
 
 void Relation::print()
 {
