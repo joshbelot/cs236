@@ -10,10 +10,10 @@
 
 using namespace std;
 
-void test1(Relation rel)
+void test1(Relation rel, vector<string> attribs)
 {
 	//rename
-	vector<string> attribs = {"ONE", "TWO", "THREE"};
+	//vector<string> attribs = {"ONE", "TWO", "THREE"};
 	rel.rename(attribs);
 	for(int i = 0; i < rel.schema.size(); i++)
 	{
@@ -27,11 +27,11 @@ void test1(Relation rel)
 	next:;
 }
 
-void test2(Relation rel)
+void test2(Relation rel, vector<string> attribs)
 {
 	//project
-	vector<string> attribs = {"One", "Three"};
-	vector<string> tester = {"'brother'", "'uncle'", "'dog'", "'rabbit'", "'sandal'", "'galosh'", "'squid'", "'stingray'"};
+	//vector<string> attribs = {"One", "Three"};
+	vector<string> tester = {"'brother'", "'uncle'", "'dog'", "'fish'", "'sandal'", "'galosh'", "'squid'", "'fish'"};
 	vector<string> result;
 
 	Relation rel_proj = rel.project(attribs);
@@ -62,11 +62,11 @@ void test2(Relation rel)
 	next:;
 }
 
-void test3(Relation rel)
+void test3(Relation rel, string attrib, string val)
 {
 	//select1
-	string attrib = "one";
-	string val = "'you'";
+	//string attrib = "one";
+	//string val = "'you'";
 	vector<string> tester = {"'you'", "'you'"};
 	vector<string> result;
 
@@ -87,11 +87,11 @@ void test3(Relation rel)
 	next3:;
 }
 
-void test4(Relation rel)
+void test4(Relation rel, string attrib1, string attrib2)
 {
 	//select2
-	string attrib1 = "One";
-	string attrib2 = "Two";
+	// string attrib1 = "One";
+	// string attrib2 = "Two";
 	vector<string> tester = {"'dog'", "'dog'", "'fish'"};
 	vector<string> result;
 
@@ -117,21 +117,93 @@ void test4(Relation rel)
 
 void test5(Relation rel)
 {
-	//query1
+	//query1: name1(First,'dog')?
+	vector<string> proj = {"One"};
+	vector<string> ren = {"First"};
+
+	//select1("One", "'dog'");
+	Relation rel_sel = rel.select1("One", "'dog'");
+
+	//project("One");
+	Relation rel_proj = rel_sel.project(proj);
+
+	//rename("First");
+	rel_proj.rename(ren);
+
+	//Test for correct output.
+	for(int i = 0; i < rel_proj.schema.size(); i++)
+	{
+		if(rel_proj.schema[i] != ren[i])
+		{
+			cout << "5: Failure!\n";
+			//goto next5;
+		}
+	}
+	vector<string> tester = {"'dog'"};
+	vector<string> result;
+	for(Tuple t : rel_proj.tups)
+	{
+		result.push_back(t.tuple[0]);
+	}
+	for(int k = 0; k < tester.size(); k++)
+	{
+		if(tester[k] != result[k])
+		{
+			cout << "5: Failure!\n";
+			//goto next5;
+		}
+	}
 	cout << "5: Success!\n";
-	next5:;
+	//next5:;
 }
 
 void test6(Relation rel)
 {
-	//query2
+	//query2: name2('dog','dog')?
+	vector<string> proj = {"One", "Three"};
+	vector<string> ren = {"First", "Second"};
+
+	//select2("'dog'", "'dog'");
+	Relation rel_sel = rel.select2("One", "Two");
+
+	//project("One");
+	Relation rel_proj = rel_sel.project(proj);
+
+	//rename("First");
+	rel_proj.rename(ren);
+
+	//Test for correct output.
+	for(int i = 0; i < rel_proj.schema.size(); i++)
+	{
+		if(rel_proj.schema[i] != ren[i])
+		{
+			cout << "6: Failure!\n";
+		}
+	}
+	vector<string> tester = {"'dog'", "'fish'"};
+	vector<string> result;
+
+	for(Tuple t : rel_proj.tups)
+	{
+		for(int j = 0; j < t.tuple.size(); j++)
+		{
+			//cout << t.tuple[j] << endl;
+			result.push_back(t.tuple[j]);
+		}
+	}
+	for(int k = 0; k < tester.size(); k++)
+	{
+		if(tester[k] != result[k])
+		{
+			cout << "6: Failure!\n";
+		}
+	}
 	cout << "6: Success!\n";
-	next6:;
 }
 
 void test7(Relation rel)
 {
-	//query3
+	//query3: name1(One,Two)?
 	cout << "7: Success!\n";
 	next7:;
 }
@@ -268,17 +340,24 @@ int main(int argc, char** argv)
 	string name1 = "name1";
 	string name2 = "name2";
 
+	vector<string> attribs1 = {"ONE", "TWO", "THREE"};
+	vector<string> attribs2 = {"One", "Three"};
+	string attrib3 = "one";
+	string val3 = "'you'";
+	string attrib4_1 = "One";
+	string attrib4_2 = "Two";
+
 	//2) Initialize relations.
 	Relation rel1 = Relation(name1, s3, t3);
 	Relation rel2 = Relation(name2, s2, t2);
 
 	//3) Make 10 test cases.
-	test1(rel1);
-	test2(rel1);
-	test3(rel2);
-	test4(rel1);
-	test5(rel2);
-	test6(rel2);
+	test1(rel1, attribs1);
+	test2(rel1, attribs2);
+	test3(rel2, attrib3, val3);
+	test4(rel1, attrib4_1, attrib4_2);
+	test5(rel1);
+	test6(rel1);
 	test7(rel2);
 	test8(rel2);
 	test9(rel2);

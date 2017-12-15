@@ -24,13 +24,5 @@ public:
 	void rename(vector<string> attribs);
 	vector<int> return_indexes(vector<string> attribs);
 	int return_index(string attrib);
-	/*
-	vector<Pair> shared(const vector<string>& schema1, const vector<string>& schema2);
-	vector<string> make_new_schema(const vector<string>& schema1, const vector<string>& schema2);
-	bool compatible(Tuple t1, Tuple t2, const vector<Pair>& pairs);
-	Tuple merge_tuples(Tuple t1, Tuple t2, const vector<Pair>& pairs, const vector<string>& new_schema);
-	Relation join(const Relation& r1, const Relation& r2);
-	bool is_found(const vector<string>& v, string s);
-	*/
 	void print();
 };

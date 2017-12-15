@@ -49,6 +49,7 @@ Relation Relation::select2(string attrib1, string attrib2)
 	//find where two tuples match.
 	int index1 = return_index(attrib1);
 	int index2 = return_index(attrib2);
+
 	set<Tuple> new_tups;
 	for(Tuple t: tups)
 	{
@@ -114,38 +115,6 @@ int Relation::return_index(string attrib)
 	}
 	return -1;
 }
-
-/*
-vector<Pair> Relation::shared(const vector<string>& schema1, const vector<string>& schema2)
-{
-
-}
-
-vector<string> Relation::make_new_schema(const vector<string>& schema1, const vector<string>& schema2)
-{
-
-}
-
-bool Relation::compatible(Tuple t1, Tuple t2, const vector<Pair>& pairs)
-{
-
-}
-
-Tuple Relation::merge_tuples(Tuple t1, Tuple t2, const vector<Pair>& pairs, const vector<string>& new_schema)
-{
-
-}
-
-Relation Relation::join(const Relation& r1, const Relation& r2)
-{
-
-}
-
-bool Relation::is_found(const vector<string>& v, string s)
-{
-
-}
-*/
 
 void Relation::print()
 {
