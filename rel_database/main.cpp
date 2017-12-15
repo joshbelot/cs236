@@ -19,11 +19,11 @@ void test1(Relation rel)
 	{
 		if(rel.schema[i] != attribs[i])
 		{
-			cout << "Failure!\n";
+			cout << "1: Failure!\n";
 			goto next;
 		}
 	}
-	cout << "Success!\n";
+	cout << "1: Success!\n";
 	next:;
 }
 
@@ -31,68 +31,104 @@ void test2(Relation rel)
 {
 	//project
 	vector<string> attribs = {"One", "Three"};
+	vector<string> tester = {"'brother'", "'uncle'", "'dog'", "'rabbit'", "'sandal'", "'galosh'", "'squid'", "'stingray'"};
+	vector<string> result;
+
 	Relation rel_proj = rel.project(attribs);
 	for(int i = 0; i < rel_proj.schema.size(); i++)
 	{
 		if(rel_proj.schema[i] != attribs[i])
 		{
-			cout << "Failure!\n";
+			cout << "2: Failure!\n";
 			goto next;
 		}
 	}
-	cout << "Success!\n";
-	next:;
 	for(Tuple t : rel_proj.tups)
 	{
 		for(int j = 0; j < t.tuple.size(); j++)
 		{
-			cout << t.tuple[j] << endl;
+			result.push_back(t.tuple[j]);
 		}
 	}
+	for(int k = 0; k < tester.size(); k++)
+	{
+		if(tester[k] != result[k])
+		{
+			cout << "2: Failure!\n";
+			goto next;
+		}
+	}
+	cout << "2: Success!\n";
+	next:;
 }
 
 void test3(Relation rel)
 {
 	//select1
 	string attrib = "one";
-	string val = "you";
+	string val = "'you'";
+	vector<string> tester = {"'you'", "'you'"};
+	vector<string> result;
+
 	Relation rel_sel = rel.select1(attrib, val);
+	for(Tuple t : rel_sel.tups)
+	{
+		result.push_back(t.tuple[0]);
+	}
+	for(int k = 0; k < tester.size(); k++)
+	{
+		if(tester[k] != result[k])
+		{
+			cout << "2: Failure!\n";
+			goto next3;
+		}
+	}
+	cout << "3: Success!\n";
+	next3:;
 }
 
-// void test4()
-// {
-		//select2
-// }
+void test4(Relation rel)
+{
+	//select2
+	cout << "4: Success!\n";
+	next4:;
+}
 
-// void test5()
-// {
-	
-// }
+void test5(Relation rel)
+{
+	cout << "5: Success!\n";
+	next5:;
+}
 
-// void test6()
-// {
-	
-// }
+void test6(Relation rel)
+{
+	cout << "6: Success!\n";
+	next6:;
+}
 
-// void test7()
-// {
-	
-// }
+void test7(Relation rel)
+{
+	cout << "7: Success!\n";
+	next7:;
+}
 
-// void test8()
-// {
-	
-// }
+void test8(Relation rel)
+{
+	cout << "8: Success!\n";
+	next8:;
+}
 
-// void test9()
-// {
-	
-// }
+void test9(Relation rel)
+{
+	cout << "9: Success!\n";
+	next9:;
+}
 
-// void test10()
-// {
-	
-// }
+void test10(Relation rel)
+{
+	cout << "10: Success!\n";
+	next10:;
+}
 
 
 int main(int argc, char** argv)
@@ -186,8 +222,8 @@ int main(int argc, char** argv)
 	G.insert("'me'");
 
 	Tuple H;
-	H.insert("'this'");
-	H.insert("'that'");
+	H.insert("'you'");
+	H.insert("'him'");
 
 	set<Tuple> t3;
 	t3.insert(A);
@@ -215,7 +251,14 @@ int main(int argc, char** argv)
 	test1(rel1);
 	test2(rel1);
 	test3(rel2);
-	//test4(rel2);
+	test4(rel2);
+	test5(rel2);
+	test6(rel2);
+	test7(rel2);
+	test8(rel2);
+	test9(rel2);
+	test10(rel2);
+
 
 	return 0;
 }
