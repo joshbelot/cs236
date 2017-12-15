@@ -90,30 +90,55 @@ void test3(Relation rel)
 void test4(Relation rel)
 {
 	//select2
+	string attrib1 = "One";
+	string attrib2 = "Two";
+	vector<string> tester = {"'dog'", "'dog'", "'fish'"};
+	vector<string> result;
+
+	Relation rel_sel2 = rel.select2(attrib1, attrib2);
+	for(Tuple t : rel_sel2.tups)
+	{
+		for(int j = 0; j < t.tuple.size(); j++)
+		{
+			result.push_back(t.tuple[j]);
+		}
+	}
+	for(int k = 0; k < tester.size(); k++)
+	{
+		if(tester[k] != result[k])
+		{
+			cout << "2: Failure!\n";
+			goto next4;
+		}
+	}
 	cout << "4: Success!\n";
 	next4:;
 }
 
 void test5(Relation rel)
 {
+	//query1
 	cout << "5: Success!\n";
 	next5:;
 }
 
 void test6(Relation rel)
 {
+	//query2
 	cout << "6: Success!\n";
 	next6:;
 }
 
 void test7(Relation rel)
 {
+	//query3
 	cout << "7: Success!\n";
 	next7:;
 }
 
 void test8(Relation rel)
 {
+	//query4
 	cout << "8: Success!\n";
 	next8:;
 }
@@ -191,8 +216,8 @@ int main(int argc, char** argv)
 	//1) Make tuples, schema, and names. 
 	Tuple A;
 	A.insert("'dog'");
-	A.insert("'cat'");
-	A.insert("'rabbit'");
+	A.insert("'dog'");
+	A.insert("'fish'");
 
 	Tuple B;
 	B.insert("'brother'");
@@ -202,7 +227,7 @@ int main(int argc, char** argv)
 	Tuple C;
 	C.insert("'squid'");
 	C.insert("'shark'");
-	C.insert("'stingray'");
+	C.insert("'fish'");
 
 	Tuple D;
 	D.insert("'sandal'");
@@ -251,7 +276,7 @@ int main(int argc, char** argv)
 	test1(rel1);
 	test2(rel1);
 	test3(rel2);
-	test4(rel2);
+	test4(rel1);
 	test5(rel2);
 	test6(rel2);
 	test7(rel2);

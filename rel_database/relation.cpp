@@ -46,12 +46,13 @@ Relation Relation::select1(string attrib, string val)
 
 Relation Relation::select2(string attrib1, string attrib2)
 {
+	//find where two tuples match.
 	int index1 = return_index(attrib1);
 	int index2 = return_index(attrib2);
 	set<Tuple> new_tups;
 	for(Tuple t: tups)
 	{
-		if(t.tuple[index1] ==t.tuple[index2])
+		if(t.tuple[index1] == t.tuple[index2])
 		{
 			new_tups.insert(t);
 		}
