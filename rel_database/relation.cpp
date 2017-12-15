@@ -63,20 +63,17 @@ Relation Relation::project(vector<string> attribs)
 {
   vector<string> new_schema = attribs;
   vector<int> indexes = return_indexes(attribs);
-  set<Tuple> new_tups;
-
-  cout << "Tups size: " << tups.size() << endl;
-  
+  set<Tuple> new_tuples;
   for(Tuple t : tups)
   {
     Tuple new_tuple = Tuple();
     for(int i = 0; i < indexes.size(); i++)
     {
-      new_tuple.insert(t.tuple[indexes[i]]);
+		new_tuple.insert(t.tuple[indexes[i]]);
     }
-    new_tups.insert(new_tuple);
+    new_tuples.insert(new_tuple);
   }
-  return Relation(name, new_schema, new_tups);
+  return Relation(name, new_schema, new_tuples);
 }
 
 void Relation::rename(vector<string> attribs)

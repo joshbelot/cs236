@@ -34,18 +34,34 @@ void test2(Relation rel)
 	Relation rel_proj = rel.project(attribs);
 	for(int i = 0; i < rel_proj.schema.size(); i++)
 	{
-		cout << rel_proj.schema[i] << endl;
+		if(rel_proj.schema[i] != attribs[i])
+		{
+			cout << "Failure!\n";
+			goto next;
+		}
+	}
+	cout << "Success!\n";
+	next:;
+	for(Tuple t : rel_proj.tups)
+	{
+		for(int j = 0; j < t.tuple.size(); j++)
+		{
+			cout << t.tuple[j] << endl;
+		}
 	}
 }
 
-// void test3()
-// {
-	
-// }
+void test3(Relation rel)
+{
+	//select1
+	string attrib = "one";
+	string val = "you";
+	Relation rel_sel = rel.select1(attrib, val);
+}
 
 // void test4()
 // {
-	
+		//select2
 // }
 
 // void test5()
@@ -148,30 +164,30 @@ int main(int argc, char** argv)
 	B.insert("'uncle'");
 
 	Tuple C;
-	A.insert("'squid'");
-	A.insert("'shark'");
-	A.insert("'stingray'");
+	C.insert("'squid'");
+	C.insert("'shark'");
+	C.insert("'stingray'");
 
 	Tuple D;
-	A.insert("'sandal'");
-	A.insert("'boot'");
-	A.insert("'galosh'");
+	D.insert("'sandal'");
+	D.insert("'boot'");
+	D.insert("'galosh'");
 
 	Tuple E;
-	A.insert("'mom'");
-	A.insert("'dad'");
+	E.insert("'mom'");
+	E.insert("'dad'");
 
 	Tuple F;
-	A.insert("'Tom'");
-	A.insert("'Jerry'");
+	F.insert("'Tom'");
+	F.insert("'Jerry'");
 
 	Tuple G;
-	A.insert("'you'");
-	A.insert("'me'");
+	G.insert("'you'");
+	G.insert("'me'");
 
 	Tuple H;
-	A.insert("'this'");
-	A.insert("'that'");
+	H.insert("'this'");
+	H.insert("'that'");
 
 	set<Tuple> t3;
 	t3.insert(A);
@@ -198,7 +214,8 @@ int main(int argc, char** argv)
 	//3) Make 10 test cases.
 	test1(rel1);
 	test2(rel1);
+	test3(rel2);
+	//test4(rel2);
 
-	//4) Test 'em.
 	return 0;
 }
