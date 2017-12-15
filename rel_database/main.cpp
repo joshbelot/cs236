@@ -203,26 +203,132 @@ void test6(Relation rel)
 
 void test7(Relation rel)
 {
-	//query3: name1(One,Two)?
+	//query3: name1(First,Second)?
+	//project("One", "Two");
+	vector<string> proj = {"one", "two"};
+	Relation rel_proj = rel.project(proj);
+
+	//rename("First", "Second");
+	vector<string> ren = {"First", "Second"};
+	rel_proj.rename(ren);
+	for(int i = 0; i < rel_proj.schema.size(); i++)
+	{
+		if(rel_proj.schema[i] != ren[i])
+		{
+			cout << "7: Failure!\n";
+		}
+	}
+
+	vector<string> tester = {"'Tom'", "'Jerry'", "'mom'", "'dad'", "'you'", "'him'", "'you'", "'me'"};
+	vector<string> result;
+
+	for(Tuple t : rel_proj.tups)
+	{
+		for(int j = 0; j < t.tuple.size(); j++)
+		{
+			result.push_back(t.tuple[j]);
+		}
+	}
+	for(int k = 0; k < tester.size(); k++)
+	{
+		if(tester[k] != result[k])
+		{
+			cout << "7: Failure!\n";
+		}
+	}
 	cout << "7: Success!\n";
 	next7:;
 }
 
 void test8(Relation rel)
 {
-	//query4
+	//query4: name2(X,X)?
+	vector<string> proj = {"One"};
+	vector<string> ren = {"X"};
+
+	//select2();
+	Relation rel_sel = rel.select2("One", "Two");
+
+	//project("One", "Two");
+	Relation rel_proj = rel_sel.project(proj);
+
+	//rename();
+	rel_proj.rename(ren);
+	for(int i = 0; i < rel_proj.schema.size(); i++)
+	{
+		if(rel_proj.schema[i] != ren[i])
+		{
+			cout << "8: Failure!\n";
+		}
+	}
+
+	vector<string> tester = {"'dog'"};
+	vector<string> result;
+
+	for(Tuple t : rel_proj.tups)
+	{
+		for(int j = 0; j < t.tuple.size(); j++)
+		{
+			result.push_back(t.tuple[j]);
+		}
+	}
+	for(int k = 0; k < tester.size(); k++)
+	{
+		if(tester[k] != result[k])
+		{
+			cout << "8: Failure!\n";
+		}
+	}
 	cout << "8: Success!\n";
-	next8:;
 }
 
-void test9(Relation rel)
+void test9(Relation rel, vector<string> attribs)
 {
+	//rename2
+	rel.rename(attribs);
+	for(int i = 0; i < rel.schema.size(); i++)
+	{
+		if(rel.schema[i] != attribs[i])
+		{
+			cout << "9: Failure!\n";
+			goto next9;
+		}
+	}
 	cout << "9: Success!\n";
 	next9:;
 }
 
-void test10(Relation rel)
+void test10(Relation rel, vector<string> attribs)
 {
+	//project2, getting rid of duplicates.
+	vector<string> tester = {"'Tom'", "'mom'", "'you'"};
+	vector<string> result;
+
+	Relation rel_proj = rel.project(attribs);
+	for(int i = 0; i < rel_proj.schema.size(); i++)
+	{
+		if(rel_proj.schema[i] != attribs[i])
+		{
+			cout << "10: Failure!\n";
+			goto next10;
+		}
+	}
+	for(Tuple t : rel_proj.tups)
+	{
+		for(int j = 0; j < t.tuple.size(); j++)
+		{
+			//cout << t.tuple[j] << endl;
+			result.push_back(t.tuple[j]);
+		}
+	}
+	for(int k = 0; k < tester.size(); k++)
+	{
+		if(tester[k] != result[k])
+		{
+			cout << "10: Failure!\n";
+			goto next10;
+		}
+	}
 	cout << "10: Success!\n";
 	next10:;
 }
@@ -342,6 +448,8 @@ int main(int argc, char** argv)
 
 	vector<string> attribs1 = {"ONE", "TWO", "THREE"};
 	vector<string> attribs2 = {"One", "Three"};
+	vector<string> attribs9 = {"A", "B"};
+	vector<string> attribs10 = {"one"};
 	string attrib3 = "one";
 	string val3 = "'you'";
 	string attrib4_1 = "One";
@@ -359,10 +467,9 @@ int main(int argc, char** argv)
 	test5(rel1);
 	test6(rel1);
 	test7(rel2);
-	test8(rel2);
-	test9(rel2);
-	test10(rel2);
-
+	test8(rel1);
+	test9(rel2, attribs9);
+	test10(rel2, attribs10);
 
 	return 0;
 }
